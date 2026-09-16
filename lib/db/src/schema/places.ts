@@ -1,4 +1,4 @@
-import { doublePrecision, pgTable, text } from "drizzle-orm/pg-core";
+import { doublePrecision, integer, pgTable, text } from "drizzle-orm/pg-core";
 import { createInsertSchema } from "drizzle-zod";
 
 export const placeConfidenceValues = ["known", "approximate", "disputed", "traditional"] as const;
@@ -16,6 +16,7 @@ export const placesTable = pgTable("places", {
     .array()
     .notNull()
     .default([]),
+  sortOrder: integer("sort_order").notNull(),
 });
 
 export const insertPlaceSchema = createInsertSchema(placesTable);

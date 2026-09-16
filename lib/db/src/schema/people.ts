@@ -1,4 +1,4 @@
-import { pgTable, text } from "drizzle-orm/pg-core";
+import { integer, pgTable, text } from "drizzle-orm/pg-core";
 import { createInsertSchema } from "drizzle-zod";
 
 export const peopleTable = pgTable("people", {
@@ -10,6 +10,7 @@ export const peopleTable = pgTable("people", {
     .array()
     .notNull()
     .default([]),
+  sortOrder: integer("sort_order").notNull(),
 });
 
 export const insertPersonSchema = createInsertSchema(peopleTable);

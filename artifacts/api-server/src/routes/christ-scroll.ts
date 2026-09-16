@@ -1,5 +1,6 @@
 import { randomUUID } from "node:crypto";
 import { Router, type IRouter, type Request, type Response } from "express";
+import rateLimit from "express-rate-limit";
 import {
   AskPassageBody,
   ExplainPassageBody,
@@ -48,6 +49,17 @@ function getOrCreateVisitorId(req: Request, res: Response): string {
   res.cookie(VISITOR_COOKIE, id, { httpOnly: true, sameSite: "lax", maxAge: ONE_YEAR_MS });
   return id;
 }
+
+// The AI endpoints proxy to a paid model, so an unauthenticated caller must not be able to run
+// up usage by hammering them. Throttle per-visitor (falling back to IP if cookies are blocked).
+const aiRateLimiter = rateLimit({
+  windowMs: 60 * 1000,
+  limit: 10,
+  standardHeaders: true,
+  legacyHeaders: false,
+  keyGenerator: (req, res) => getOrCreateVisitorId(req, res),
+  message: { error: "Too many AI requests. Please wait a moment and try again." },
+});
 
 router.get("/books", async (_req, res) => res.json(await getBooks()));
 
@@ -132,7 +144,7 @@ router.get("/search", async (req, res) => {
   return res.json({ scripture, people, places, events, journeys });
 });
 
-router.post("/ai/explain", async (req, res) => {
+router.post("/ai/explain", aiRateLimiter, async (req, res) => {
   const parsed = ExplainPassageBody.safeParse(req.body);
   if (!parsed.success) return res.status(400).json({ error: "A valid passage is required." });
   const ai = await explainPassage(parsed.data.reference, parsed.data.passage);
@@ -149,7 +161,7 @@ router.post("/ai/explain", async (req, res) => {
   });
 });
 
-router.post("/ai/ask-passage", async (req, res) => {
+router.post("/ai/ask-passage", aiRateLimiter, async (req, res) => {
   const parsed = AskPassageBody.safeParse(req.body);
   if (!parsed.success) return res.status(400).json({ error: "A valid question and passage are required." });
   const ai = await askPassage(parsed.data.question, parsed.data.reference, parsed.data.passage);

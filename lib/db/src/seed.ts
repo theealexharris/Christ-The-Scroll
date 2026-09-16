@@ -151,14 +151,15 @@ async function seed() {
     await db.insert(versesTable).values(verses.slice(i, i + VERSE_BATCH_SIZE)).onConflictDoNothing();
   }
 
-  const people = rawPeople.map(([slug, name, role]) => ({
+  const people = rawPeople.map(([slug, name, role], index) => ({
     slug, name, role,
     description: `${name} is connected to key moments in the biblical story. Explore the passages, places, and events associated with this life.`,
     scriptureReferences: slug === "simon-peter" ? ["Mark 1:16–18", "Matthew 16:13–20", "John 21:15–19"] : ["Selected Scripture"],
+    sortOrder: index,
   }));
   await db.insert(peopleTable).values(people).onConflictDoNothing();
 
-  const places = rawPlaces.map(([slug, name, region, confidence]) => {
+  const places = rawPlaces.map(([slug, name, region, confidence], index) => {
     const [latitude, longitude] = placeCoordinates[slug] ?? [31.9, 35.2];
     return {
       slug, name, region, confidence,
@@ -166,6 +167,7 @@ async function seed() {
       latitude, longitude,
       historicalNotes: `${name} connects geography directly to the biblical narrative. Location confidence is shown so archaeological uncertainty is not presented as settled fact.`,
       scriptureReferences: ["Mark 1:16–20", "Selected Scripture"],
+      sortOrder: index,
     };
   });
   await db.insert(placesTable).values(places).onConflictDoNothing();

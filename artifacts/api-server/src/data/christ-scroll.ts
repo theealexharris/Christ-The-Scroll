@@ -111,7 +111,7 @@ async function getFallbackVerse(): Promise<Verse | null> {
 }
 
 export async function getPeople(): Promise<PersonSummary[]> {
-  const rows = await db.select().from(peopleTable).orderBy(asc(peopleTable.name));
+  const rows = await db.select().from(peopleTable).orderBy(asc(peopleTable.sortOrder));
   return rows.map(toPersonSummary);
 }
 
@@ -129,7 +129,7 @@ export async function getPerson(slug: string): Promise<Person | null> {
 }
 
 export async function getPlaces(): Promise<PlaceSummary[]> {
-  const rows = await db.select().from(placesTable).orderBy(asc(placesTable.name));
+  const rows = await db.select().from(placesTable).orderBy(asc(placesTable.sortOrder));
   return rows.map(toPlaceSummary);
 }
 
@@ -260,12 +260,12 @@ export async function searchJourneys(query: string): Promise<JourneySummary[]> {
 // (as in the original mock data) we surface a representative slice rather
 // than inventing relationships that aren't backed by content.
 async function getRelatedPeople(): Promise<PersonSummary[]> {
-  const rows = await db.select().from(peopleTable).orderBy(asc(peopleTable.name)).limit(5);
+  const rows = await db.select().from(peopleTable).orderBy(asc(peopleTable.sortOrder)).limit(5);
   return rows.map(toPersonSummary);
 }
 
 async function getRelatedPlaces(): Promise<PlaceSummary[]> {
-  const rows = await db.select().from(placesTable).orderBy(asc(placesTable.name)).limit(4);
+  const rows = await db.select().from(placesTable).orderBy(asc(placesTable.sortOrder)).limit(4);
   return rows.map(toPlaceSummary);
 }
 
