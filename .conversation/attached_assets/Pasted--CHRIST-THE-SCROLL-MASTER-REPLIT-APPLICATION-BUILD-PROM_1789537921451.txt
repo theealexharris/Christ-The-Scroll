@@ -1,0 +1,3745 @@
+# CHRIST: THE SCROLL
+
+## MASTER REPLIT APPLICATION BUILD PROMPT
+
+You are acting simultaneously as:
+
+* Principal Full-Stack Software Engineer
+* Senior Mobile Product Designer
+* UX/UI Architect
+* Database Architect
+* AI/RAG Engineer
+* Bible Software Product Strategist
+* Mapping/GIS Engineer
+* Security Engineer
+* Accessibility Engineer
+* Product Manager
+* QA/Test Engineer
+
+Your assignment is to design and build a **production-quality, mobile-first Bible exploration application** named:
+
+# CHRIST: THE SCROLL
+
+### Product Descriptor
+
+**Interactive Bible**
+
+### Primary Tagline
+
+**Read the Word. Explore the Story.**
+
+### Secondary Brand Statement
+
+**Every verse opens another door.**
+
+---
+
+# 1. PRODUCT VISION
+
+Christ: The Scroll is not intended to be another generic Bible reader.
+
+It is not intended to compete with existing Bible applications primarily by offering:
+
+* more Bible versions
+* more devotionals
+* more reading plans
+* generic AI chat
+* another social network
+* another collection of commentaries
+
+Its defining purpose is:
+
+> **Turn every passage of Scripture into an interactive doorway into the people, places, events, geography, historical setting, timeline, related Scripture, and larger biblical story surrounding that passage.**
+
+The core product journey is:
+
+SCRIPTURE
+↓
+UNDERSTAND
+↓
+EXPLORE
+↓
+PEOPLE
+PLACES
+EVENTS
+TIMELINE
+RELATED SCRIPTURE
+CONTEXT
+↓
+STORY
+↓
+CONTINUE
+
+The experience should make users think:
+
+> "I have read this verse before, but I have never explored it this way."
+
+---
+
+# 2. FUNDAMENTAL PRODUCT PRINCIPLES
+
+The following rules are NON-NEGOTIABLE.
+
+## Principle 1 — Scripture Is Primary
+
+Technology must make Scripture easier to encounter and understand.
+
+Technology must never replace Scripture.
+
+The biblical text must always be visually and technically distinguished from:
+
+* AI explanations
+* commentary
+* historical context
+* reflections
+* summaries
+* translations
+* educational material
+
+Always use visible content labels such as:
+
+SCRIPTURE
+
+AI EXPLANATION
+
+HISTORICAL CONTEXT
+
+RELATED SCRIPTURE
+
+INTERPRETATION
+
+REFLECTION
+
+AI-ASSISTED TRANSLATION
+
+Never merge Scripture and AI-generated content into one unlabeled text block.
+
+---
+
+## Principle 2 — Exploration Is the Differentiator
+
+Every passage should potentially connect with:
+
+* people
+* places
+* events
+* timeline periods
+* journeys
+* related passages
+* historical context
+* themes
+
+A verse is not merely something to read.
+
+It becomes an entry point into the biblical world.
+
+---
+
+## Principle 3 — Simplicity First
+
+The application may contain deep information, but the interface must remain simple.
+
+The default experience should expose only three major actions:
+
+READ
+
+UNDERSTAND
+
+EXPLORE
+
+Advanced complexity should appear only after the user requests it.
+
+---
+
+## Principle 4 — AI Must Be Grounded
+
+Do not create a generic unrestricted Bible chatbot.
+
+AI responses should be retrieval-first.
+
+Preferred pipeline:
+
+USER QUESTION
+↓
+CURRENT PASSAGE
+↓
+RETRIEVE SCRIPTURE
+↓
+RETRIEVE RELATED VERSES
+↓
+RETRIEVE CURATED PEOPLE/PLACE/EVENT DATA
+↓
+RETRIEVE HISTORICAL METADATA
+↓
+GENERATE RESPONSE
+↓
+DISPLAY SOURCES/REFERENCES
+
+Do not rely solely on the language model's memory for questions that can be grounded in stored Scripture and curated app data.
+
+---
+
+# 3. COMPETITIVE POSITION
+
+Do not attempt to make Christ: The Scroll:
+
+"Another YouVersion."
+
+Do not position it as:
+
+"ChatGPT for the Bible."
+
+Do not lead with:
+
+"AI Bible."
+
+Position the product as:
+
+# THE BIBLE YOU CAN EXPLORE
+
+The application's unique territory is:
+
+> **Verse-connected visual exploration of Scripture.**
+
+The product should combine:
+
+Bible Reader
++
+Visual Biblical Timeline
++
+Interactive Biblical Geography
++
+People
++
+Events
++
+Journeys
++
+Historical Context
++
+Grounded AI Explanation
+
+---
+
+# 4. MVP OBJECTIVE
+
+The first production-ready MVP must prove one central hypothesis:
+
+> **When people read Scripture, do they want to explore the people, places, events, timeline, and larger story surrounding it?**
+
+Do not overbuild version one.
+
+The MVP must prioritize five flagship systems:
+
+1. SCROLL READER
+2. UNDERSTAND THIS
+3. EXPLORE THIS VERSE
+4. STORY TIMELINE
+5. INTERACTIVE BIBLICAL MAP
+
+Also implement the infrastructure required for:
+
+* authentication
+* bookmarks
+* reading progress
+* search
+* subscriptions
+* future family mode
+* future Study Mode
+* future Walk the Bible experiences
+
+But do not allow secondary features to delay the five core systems.
+
+---
+
+# 5. CORE INFORMATION ARCHITECTURE
+
+Use five main mobile navigation tabs:
+
+HOME
+
+BIBLE
+
+EXPLORE
+
+JOURNEYS
+
+ME
+
+Do not overcrowd the bottom navigation.
+
+---
+
+# 6. HOME SCREEN
+
+Create a calm, premium personalized home screen.
+
+It should include:
+
+## Header
+
+CHRIST: THE SCROLL
+
+Optional user greeting:
+
+"Welcome back, Alex"
+
+Do not make the greeting oversized.
+
+---
+
+## Continue Reading
+
+Show:
+
+Book
+
+Chapter
+
+Last passage
+
+Progress
+
+Button:
+
+CONTINUE
+
+---
+
+## Today's Scripture
+
+Show:
+
+Verse text
+
+Reference
+
+Actions:
+
+READ
+
+UNDERSTAND
+
+EXPLORE
+
+---
+
+## Continue Your Story
+
+Display the last explored biblical event, person, journey, or timeline point.
+
+Example:
+
+MOSES & THE EXODUS
+
+Continue exploring →
+
+---
+
+## Quick Explore
+
+Four cards:
+
+PEOPLE
+
+PLACES
+
+EVENTS
+
+TIMELINE
+
+---
+
+## Journey Card
+
+Example:
+
+WALK WITH JESUS
+
+Continue Journey →
+
+---
+
+## Reading Progress
+
+Display quietly.
+
+Do not create competitive spiritual scoring.
+
+---
+
+# 7. BIBLE STRUCTURE
+
+Implement all 66 canonical Protestant Bible books.
+
+Old Testament:
+
+39 books
+
+New Testament:
+
+27 books
+
+Organize them by:
+
+Testament
+Category
+Book
+Chapter
+Verse
+
+Categories should include:
+
+LAW
+
+HISTORY
+
+POETRY / WISDOM
+
+MAJOR PROPHETS
+
+MINOR PROPHETS
+
+GOSPELS
+
+HISTORY
+
+PAULINE LETTERS
+
+GENERAL LETTERS
+
+PROPHECY
+
+---
+
+# 8. PRIMARY SCRIPTURE VERSION
+
+For MVP use:
+
+# KING JAMES VERSION
+
+Use a legally usable public-domain KJV source.
+
+Document Scripture data provenance in the repository.
+
+Do not copy copyrighted translations into the database without licensing.
+
+The architecture must support additional licensed translations later.
+
+Create:
+
+translations
+
+books
+
+chapters
+
+verses
+
+Do not hard-code Bible text into React components.
+
+---
+
+# 9. SCRIPTURE SCROLL READER
+
+This is the heart of the application.
+
+Build a mobile-first vertically scrollable/swipeable Scripture reader.
+
+Do not make each verse feel like a TikTok gimmick.
+
+Reading must remain reverent, comfortable, and natural.
+
+Provide two reading views:
+
+## FLOW VIEW
+
+Traditional continuous Scripture reading.
+
+Users scroll normally through a chapter.
+
+## DISCOVERY VIEW
+
+Individual verse or passage cards optimized for exploration.
+
+Users may swipe upward to advance.
+
+Allow users to switch between:
+
+FLOW
+
+DISCOVERY
+
+Persist the preference.
+
+---
+
+# 10. DISCOVERY CARD
+
+A discovery passage card should look conceptually like:
+
+GENESIS
+
+CHAPTER 12
+
+SCRIPTURE
+
+"Now the LORD had said unto Abram..."
+
+Genesis 12:1
+
+KJV
+
+---
+
+UNDERSTAND
+
+EXPLORE
+
+LISTEN
+
+SAVE
+
+SHARE
+
+---
+
+Who?
+
+Where?
+
+When?
+
+What happened next?
+
+Do not display every option if no relevant metadata exists.
+
+---
+
+# 11. EXPLORE THIS VERSE
+
+This is one of the application's defining features.
+
+When a user taps:
+
+# EXPLORE
+
+Open an exploration sheet/page.
+
+Show only categories relevant to the passage.
+
+Possible sections:
+
+## PEOPLE
+
+Example:
+
+Jesus
+
+Simon Peter
+
+Andrew
+
+---
+
+## PLACE
+
+Example:
+
+Sea of Galilee
+
+Capernaum
+
+---
+
+## EVENT
+
+Example:
+
+Calling of the First Disciples
+
+---
+
+## TIMELINE
+
+Example:
+
+Early Galilean Ministry
+
+---
+
+## RELATED SCRIPTURE
+
+Example:
+
+Matthew 4:18–22
+
+Luke 5:1–11
+
+John 1:40–42
+
+---
+
+## CONTEXT
+
+Example:
+
+Fishing and commerce around first-century Galilee
+
+---
+
+## BEFORE THIS
+
+Previous related biblical event
+
+---
+
+## AFTER THIS
+
+Next related biblical event
+
+The user should be able to move naturally:
+
+VERSE → PERSON
+
+VERSE → PLACE
+
+VERSE → EVENT
+
+VERSE → TIMELINE
+
+VERSE → RELATED PASSAGE
+
+---
+
+# 12. BIBLICAL KNOWLEDGE GRAPH
+
+Architect the data around relationships.
+
+Do not treat Bible content as isolated tables.
+
+Create a biblical knowledge graph using relational tables initially.
+
+Core objects:
+
+VERSE
+
+PERSON
+
+PLACE
+
+EVENT
+
+TIMELINE EVENT
+
+JOURNEY
+
+THEME
+
+SCRIPTURE REFERENCE
+
+Relationships must allow:
+
+verse → people
+
+verse → places
+
+verse → events
+
+verse → timeline events
+
+verse → related verses
+
+person → verses
+
+person → places
+
+person → events
+
+place → verses
+
+place → people
+
+place → events
+
+event → people
+
+event → places
+
+event → verses
+
+event → timeline
+
+journey → places
+
+journey → events
+
+journey → passages
+
+This relationship system is fundamental.
+
+---
+
+# 13. PEOPLE EXPERIENCE
+
+Build individual biblical-person pages.
+
+Example:
+
+# MOSES
+
+Subtitle:
+
+Prophet • Leader of the Exodus
+
+Sections:
+
+OVERVIEW
+
+SCRIPTURE REFERENCES
+
+LIFE TIMELINE
+
+PLACES
+
+MAJOR EVENTS
+
+PEOPLE CONNECTED TO MOSES
+
+RELATED JOURNEYS
+
+Read about Moses →
+
+Explore his journey →
+
+View on timeline →
+
+View locations →
+
+Do not fabricate biographical details.
+
+Clearly distinguish biblical statements from later tradition.
+
+---
+
+# 14. PERSON TIMELINE
+
+For important biblical figures create visual life/event journeys.
+
+Example:
+
+MOSES
+
+BIRTH
+
+↓
+
+EGYPT
+
+↓
+
+MIDIAN
+
+↓
+
+BURNING BUSH
+
+↓
+
+RETURN TO EGYPT
+
+↓
+
+PASSOVER
+
+↓
+
+EXODUS
+
+↓
+
+RED SEA
+
+↓
+
+SINAI
+
+↓
+
+WILDERNESS
+
+↓
+
+DEATH
+
+Every timeline event should link to Scripture.
+
+---
+
+# 15. PLACES EXPERIENCE
+
+Every major biblical place should have its own page.
+
+Example:
+
+# CAPERNAUM
+
+Show:
+
+Biblical name
+
+Modern geographic context
+
+Approximate or known coordinates
+
+Relevant passages
+
+People associated
+
+Events associated
+
+Timeline context
+
+Map
+
+Related journey
+
+Historical notes
+
+Do not claim precise modern identification when scholarship is uncertain.
+
+Use labels:
+
+KNOWN
+
+TRADITIONAL LOCATION
+
+APPROXIMATE
+
+DISPUTED
+
+where appropriate.
+
+---
+
+# 16. THEN & NOW
+
+Create a feature called:
+
+# THEN & NOW
+
+For major biblical locations show:
+
+BIBLICAL WORLD
+
+versus
+
+MODERN LOCATION
+
+Provide:
+
+ancient name
+
+modern name/location
+
+relevant archaeological/historical notes
+
+major biblical events
+
+Scripture references
+
+Map comparison
+
+The user should be able to understand where the biblical location existed in relation to the modern world.
+
+Do not imply archaeological certainty where it does not exist.
+
+---
+
+# 17. INTERACTIVE MAP
+
+Use:
+
+OpenStreetMap
+
+with:
+
+MapLibre GL JS
+
+or Leaflet if implementation reliability is better.
+
+Prefer MapLibre if practical.
+
+Build a reusable mapping service.
+
+Map layers should eventually support:
+
+OLD TESTAMENT
+
+JESUS' MINISTRY
+
+PAUL'S JOURNEYS
+
+EXODUS
+
+ISRAEL
+
+ANCIENT NEAR EAST
+
+EARLY CHURCH
+
+---
+
+# 18. MAP INTERACTION
+
+Pins must connect directly to app data.
+
+Tap a location.
+
+Show:
+
+NAME
+
+BIBLICAL NAME
+
+CURRENT REGION
+
+PEOPLE
+
+EVENTS
+
+SCRIPTURE
+
+JOURNEYS
+
+BUTTON:
+
+EXPLORE PLACE
+
+The map must never become a decorative pin collection.
+
+Its purpose is connecting geography to Scripture.
+
+---
+
+# 19. STORY TIMELINE
+
+Create a signature feature called:
+
+# THE STORY
+
+Subheading:
+
+**From Creation to Revelation**
+
+Create a visual biblical timeline.
+
+Primary milestones:
+
+CREATION
+
+FALL
+
+NOAH
+
+ABRAHAM
+
+ISAAC
+
+JACOB
+
+JOSEPH
+
+MOSES
+
+EXODUS
+
+PROMISED LAND
+
+JUDGES
+
+SAUL
+
+DAVID
+
+SOLOMON
+
+DIVIDED KINGDOM
+
+EXILE
+
+RETURN
+
+PROPHETS
+
+BIRTH OF JESUS
+
+MINISTRY OF JESUS
+
+CRUCIFIXION
+
+RESURRECTION
+
+PENTECOST
+
+EARLY CHURCH
+
+PAUL
+
+MISSIONARY JOURNEYS
+
+REVELATION
+
+For uncertain dates:
+
+Never display estimates as settled fact.
+
+Use:
+
+Approx.
+
+Traditional chronology
+
+Date uncertain
+
+Scholarly estimates vary
+
+where necessary.
+
+---
+
+# 20. TIMELINE EVENT PAGE
+
+Example:
+
+# THE EXODUS
+
+Show:
+
+OVERVIEW
+
+WHEN
+
+PEOPLE
+
+PLACES
+
+SCRIPTURE
+
+EVENTS BEFORE
+
+EVENTS AFTER
+
+MAP
+
+RELATED JOURNEY
+
+RELATED PEOPLE
+
+Button:
+
+READ THE SCRIPTURE
+
+Button:
+
+EXPLORE THE MAP
+
+Button:
+
+CONTINUE THE STORY
+
+---
+
+# 21. STORY MODE
+
+Create:
+
+# STORY MODE
+
+Story Mode lets a user experience Scripture chronologically through major events rather than only canonical book order.
+
+Example path:
+
+CREATION
+
+↓
+
+FALL
+
+↓
+
+NOAH
+
+↓
+
+ABRAHAM
+
+↓
+
+ISAAC
+
+↓
+
+JACOB
+
+↓
+
+JOSEPH
+
+↓
+
+MOSES
+
+↓
+
+EXODUS
+
+↓
+
+PROMISED LAND
+
+↓
+
+DAVID
+
+↓
+
+KINGDOM
+
+↓
+
+EXILE
+
+↓
+
+PROPHETS
+
+↓
+
+JESUS
+
+↓
+
+CROSS
+
+↓
+
+RESURRECTION
+
+↓
+
+EARLY CHURCH
+
+Every Story Mode chapter connects to actual Scripture passages.
+
+Story Mode should never replace the biblical text.
+
+It guides users into it.
+
+---
+
+# 22. JOURNEYS
+
+Create architecture for immersive journeys.
+
+Initial flagship journey:
+
+# WALK WITH JESUS
+
+Journey structure:
+
+NAZARETH
+
+↓
+
+JORDAN REGION
+
+↓
+
+GALILEE
+
+↓
+
+CAPERNAUM
+
+↓
+
+SEA OF GALILEE
+
+↓
+
+SAMARIA
+
+↓
+
+JUDEA
+
+↓
+
+JERUSALEM
+
+Each stop should include:
+
+Map location
+
+Relevant Scripture
+
+Related people
+
+Event explanation
+
+Historical context
+
+What happened before
+
+What happened next
+
+Continue Journey →
+
+---
+
+# 23. FUTURE JOURNEYS
+
+Structure the database so future journeys can include:
+
+THE EXODUS
+
+ABRAHAM'S JOURNEY
+
+DAVID'S LIFE
+
+ELIJAH
+
+THE BABYLONIAN EXILE
+
+PAUL'S FIRST MISSIONARY JOURNEY
+
+PAUL'S SECOND MISSIONARY JOURNEY
+
+PAUL'S THIRD MISSIONARY JOURNEY
+
+ROAD TO ROME
+
+Do not build all of them during the initial MVP.
+
+Seed only enough to demonstrate the system extremely well.
+
+---
+
+# 24. UNDERSTAND THIS
+
+Create a flagship AI feature:
+
+# UNDERSTAND THIS
+
+When selected display:
+
+SCRIPTURE
+
+[Original unchanged KJV passage]
+
+Then:
+
+# IN SIMPLE WORDS
+
+AI-generated explanation.
+
+Then:
+
+# WHY IT MATTERS
+
+Educational/contextual explanation.
+
+Then:
+
+# EXPLORE
+
+Relevant people, places, events and related Scripture.
+
+Always display:
+
+**AI-assisted explanation — not Scripture.**
+
+The original Scripture must never be modified.
+
+---
+
+# 25. ASK THIS PASSAGE
+
+Do not initially create generic Bible Chat as the primary AI experience.
+
+Create:
+
+# ASK THIS PASSAGE
+
+The AI already knows the current:
+
+Book
+
+Chapter
+
+Verse
+
+Passage
+
+People
+
+Places
+
+Events
+
+Timeline
+
+Cross references
+
+Suggested questions should include:
+
+What is happening here?
+
+Who is speaking?
+
+Who is being spoken to?
+
+Where did this happen?
+
+What happened before this?
+
+What happened after this?
+
+What does this word mean?
+
+Why is this important?
+
+What other verses relate to this?
+
+Are there different Christian interpretations?
+
+---
+
+# 26. AI RESPONSE FORMAT
+
+AI Bible answers should preferably follow:
+
+# SHORT ANSWER
+
+Direct response.
+
+# SCRIPTURE
+
+Relevant verses/references.
+
+# CONTEXT
+
+Relevant surrounding passage.
+
+# EXPLANATION
+
+Grounded explanation.
+
+# DIFFERENT INTERPRETATIONS
+
+Only if relevant.
+
+# EXPLORE NEXT
+
+Suggested person/place/event/passage.
+
+Never fabricate Bible verses.
+
+Never fabricate quotations.
+
+Never claim speculation as Scripture.
+
+---
+
+# 27. INTERPRETATION LENS
+
+Build architecture for:
+
+# INTERPRETATION LENS
+
+Do not allow AI to make a contested interpretation sound universally accepted.
+
+When important interpretations differ, present neutral explanatory language such as:
+
+"Christian traditions interpret this passage in several ways."
+
+Possible future categories:
+
+Historical Protestant
+
+Catholic
+
+Eastern Orthodox
+
+Evangelical
+
+Academic / historical-literary
+
+Only display a tradition when reliable curated material exists.
+
+Do not fabricate denominational positions.
+
+Do not create false equivalency where the issue is primarily factual rather than interpretive.
+
+MVP can include the UI architecture and limited curated examples.
+
+---
+
+# 28. AI ARCHITECTURE
+
+Create a provider abstraction.
+
+Interface concept:
+
+AIProvider
+
+Methods:
+
+explainPassage()
+
+simplifyPassage()
+
+answerPassageQuestion()
+
+generateContext()
+
+generateReflection()
+
+summarizeEvent()
+
+generateJourneySummary()
+
+Do not hard-code the application to one model provider.
+
+Support environment-configurable models.
+
+Create adapters allowing future support for:
+
+OpenAI-compatible APIs
+
+Ollama
+
+other model providers
+
+---
+
+# 29. RAG / RETRIEVAL ARCHITECTURE
+
+The Bible assistant should use Retrieval-Augmented Generation.
+
+Create retrieval sources:
+
+SCRIPTURE DATABASE
+
+CROSS REFERENCES
+
+PEOPLE
+
+PLACES
+
+EVENTS
+
+TIMELINE
+
+CURATED HISTORICAL CONTEXT
+
+CURATED INTERPRETATION CONTENT
+
+Pipeline:
+
+USER REQUEST
+
+↓
+
+PASSAGE CONTEXT
+
+↓
+
+SCRIPTURE RETRIEVAL
+
+↓
+
+ENTITY RETRIEVAL
+
+↓
+
+RELATED PASSAGE RETRIEVAL
+
+↓
+
+CURATED CONTEXT
+
+↓
+
+MODEL
+
+↓
+
+VALIDATION
+
+↓
+
+DISPLAY REFERENCES
+
+Do not allow user-facing citations to point to content that was not actually retrieved.
+
+---
+
+# 30. AI SAFETY RULES
+
+The AI must never:
+
+invent Bible verses
+
+change KJV wording and present it as KJV
+
+invent quotations
+
+invent people
+
+invent biblical events
+
+invent locations
+
+invent historical certainty
+
+claim AI-generated text is Scripture
+
+claim one contested interpretation is unquestionably correct
+
+pretend archaeological debates are settled
+
+fabricate source citations
+
+Generate unsupported theological claims as fact
+
+If uncertain:
+
+Say so.
+
+---
+
+# 31. RESPONSE CACHING
+
+AI costs must be controlled.
+
+Cache common requests such as:
+
+Genesis 1:1 explanation
+
+John 3:16 explanation
+
+Psalm 23 explanation
+
+common passage context
+
+entity descriptions
+
+Cache using keys based on:
+
+translation
+
+reference
+
+request type
+
+reading level
+
+language
+
+model version
+
+Prompt version
+
+---
+
+# 32. SEARCH
+
+Create fast search.
+
+Search by:
+
+Scripture words
+
+Reference
+
+Book
+
+Person
+
+Place
+
+Event
+
+Topic
+
+Examples:
+
+"John 3:16"
+
+"David"
+
+"Jerusalem"
+
+"Red Sea"
+
+"resurrection"
+
+Results grouped by:
+
+SCRIPTURE
+
+PEOPLE
+
+PLACES
+
+EVENTS
+
+JOURNEYS
+
+---
+
+# 33. BOOKMARKS
+
+Authenticated users can:
+
+bookmark passages
+
+bookmark people
+
+bookmark places
+
+bookmark events
+
+bookmark journeys
+
+Organize saved items under:
+
+MY LIBRARY
+
+---
+
+# 34. NOTES
+
+Create notes-ready database architecture.
+
+MVP can allow basic private Scripture notes.
+
+Notes must belong only to authenticated users.
+
+Do not expose notes publicly.
+
+---
+
+# 35. READING PROGRESS
+
+Track:
+
+last book
+
+last chapter
+
+last verse
+
+chapters completed
+
+books explored
+
+journeys started
+
+journeys completed
+
+timeline events explored
+
+places explored
+
+Do not present these as spiritual rankings.
+
+---
+
+# 36. GAMIFICATION PHILOSOPHY
+
+Encourage consistency.
+
+Do not gamify spiritual superiority.
+
+Allowed:
+
+7-Day Reading Rhythm
+
+First Book Explored
+
+First Journey Completed
+
+10 Biblical Places Explored
+
+Timeline Explorer
+
+New Testament Explorer
+
+Avoid:
+
+leaderboards
+
+Bible coins
+
+competitive spiritual points
+
+public rankings
+
+"holiness scores"
+
+---
+
+# 37. AUDIO ARCHITECTURE
+
+Create reusable audio interfaces.
+
+Prepare for:
+
+play
+
+pause
+
+seek
+
+playback speed
+
+sleep timer
+
+verse highlighting
+
+auto-advance
+
+Do not bundle copyrighted narration without licensing.
+
+Audio source must be configurable.
+
+MVP can implement interface + sample legally usable audio where available.
+
+---
+
+# 38. STUDY MODE ARCHITECTURE
+
+Prepare a future feature:
+
+# STUDY MODE
+
+The normal user should not see advanced study complexity unless Study Mode is enabled.
+
+Future Study Mode modules:
+
+Cross References
+
+Original-Language Tools
+
+Word Studies
+
+Historical Context
+
+Parallel Passages
+
+Commentaries
+
+Themes
+
+Notes
+
+Maps
+
+People
+
+Places
+
+Timeline
+
+Architecture must support Study Mode later.
+
+Do not let it delay the MVP.
+
+---
+
+# 39. FAMILY/KIDS ARCHITECTURE
+
+Prepare future support for:
+
+PARENT
+
+TEEN
+
+CHILD
+
+Future age modes:
+
+5–7
+
+8–10
+
+11–13
+
+TEEN
+
+ADULT
+
+But do not create a weak implementation where children merely receive shorter adult AI responses.
+
+Future Kids Mode should alter:
+
+language
+
+navigation
+
+visual density
+
+lesson length
+
+questions
+
+AI permissions
+
+Do not collect unnecessary information from children.
+
+Do not enable public messaging for child accounts.
+
+MVP should primarily target adult/general users while retaining family-ready database architecture.
+
+---
+
+# 40. VISUAL DESIGN
+
+Create an original premium Bible identity.
+
+Do not make the application resemble:
+
+generic AI dashboards
+
+enterprise SaaS
+
+crypto apps
+
+neon technology dashboards
+
+social media feeds
+
+Visual tone:
+
+reverent
+
+warm
+
+premium
+
+calm
+
+historical
+
+modern
+
+trustworthy
+
+educational
+
+---
+
+# 41. COLOR SYSTEM
+
+Suggested starting palette:
+
+Warm Ivory:
+#F7F2E8
+
+Soft Parchment:
+#EFE5D2
+
+Deep Burgundy:
+#6B2737
+
+Dark Burgundy:
+#4D1724
+
+Charcoal:
+#252525
+
+Muted Brown:
+#756457
+
+Subtle Gold:
+#B79A5B
+
+Soft Border:
+#DED3C4
+
+Do not overuse gold.
+
+Do not create gaudy religious styling.
+
+All colors should be implemented as reusable design tokens.
+
+---
+
+# 42. TYPOGRAPHY
+
+Scripture should feel readable and distinguished.
+
+Use a refined serif for Scripture where practical.
+
+Use a highly readable sans-serif for interface elements.
+
+Suggested open-source options:
+
+Scripture:
+
+Libre Baskerville
+
+Source Serif 4
+
+Interface:
+
+Inter
+
+Source Sans 3
+
+Ensure excellent rendering across mobile devices.
+
+---
+
+# 43. UI COMPONENT SYSTEM
+
+Create reusable components:
+
+Button
+
+IconButton
+
+Card
+
+ScriptureCard
+
+EntityCard
+
+PersonCard
+
+PlaceCard
+
+EventCard
+
+TimelineCard
+
+JourneyCard
+
+BottomSheet
+
+Modal
+
+Drawer
+
+SearchBar
+
+TabBar
+
+ProgressIndicator
+
+MapPanel
+
+AudioPlayer
+
+AIResponseCard
+
+SourceReference
+
+ContentLabel
+
+LoadingSkeleton
+
+EmptyState
+
+ErrorState
+
+Toast
+
+Do not build pages from duplicated one-off markup.
+
+---
+
+# 44. NAVIGATION DESIGN
+
+Bottom tabs:
+
+Home
+
+Bible
+
+Explore
+
+Journeys
+
+Me
+
+Use recognizable icons.
+
+Keep labels visible.
+
+Do not rely on icons alone.
+
+---
+
+# 45. ACCESSIBILITY
+
+Meet WCAG-oriented best practices.
+
+Support:
+
+screen readers
+
+keyboard navigation
+
+large text
+
+semantic HTML
+
+high contrast
+
+reduced motion
+
+focus indicators
+
+minimum touch sizes
+
+ARIA labels
+
+alternative controls for swipe gestures
+
+Never require gestures as the only means of navigation.
+
+---
+
+# 46. TECHNOLOGY STACK
+
+Use a modern TypeScript architecture.
+
+Preferred frontend:
+
+React
+
+TypeScript
+
+Vite
+
+Tailwind CSS
+
+React Router
+
+TanStack Query
+
+Zod
+
+Use component architecture suitable for future migration/shared patterns with React Native/Expo if needed.
+
+---
+
+# 47. PWA
+
+Build the MVP as a mobile-first Progressive Web App.
+
+Implement:
+
+web manifest
+
+installable experience
+
+app icons
+
+service worker
+
+offline shell
+
+responsive layouts
+
+basic offline Scripture caching
+
+splash screen
+
+The application should feel close to a native mobile app when opened on a phone.
+
+---
+
+# 48. BACKEND
+
+Use:
+
+Node.js
+
+TypeScript
+
+Fastify preferred
+
+Express acceptable if implementation is more stable
+
+PostgreSQL
+
+Drizzle ORM
+
+Zod
+
+Use:
+
+routes
+
+controllers
+
+services
+
+repositories
+
+database abstraction
+
+authentication middleware
+
+centralized error handling
+
+---
+
+# 49. DATABASE
+
+Create normalized tables including:
+
+users
+
+profiles
+
+user_preferences
+
+subscriptions
+
+subscription_events
+
+translations
+
+books
+
+chapters
+
+verses
+
+people
+
+places
+
+events
+
+timeline_events
+
+journeys
+
+journey_stops
+
+themes
+
+verse_people
+
+verse_places
+
+verse_events
+
+verse_timeline_events
+
+verse_themes
+
+cross_references
+
+person_relationships
+
+person_places
+
+person_events
+
+place_events
+
+event_people
+
+event_places
+
+journey_places
+
+journey_events
+
+journey_verses
+
+bookmarks
+
+notes
+
+reading_progress
+
+exploration_progress
+
+streaks
+
+achievements
+
+user_achievements
+
+ai_requests
+
+ai_responses
+
+ai_cache
+
+content_sources
+
+audio_assets
+
+---
+
+# 50. DATABASE REQUIREMENTS
+
+Add:
+
+foreign keys
+
+indexes
+
+created_at
+
+updated_at
+
+appropriate unique constraints
+
+soft delete only where useful
+
+Create indexes for:
+
+verse reference lookup
+
+Bible text search
+
+people names
+
+place names
+
+event names
+
+cross references
+
+relationship queries
+
+---
+
+# 51. BIBLE DATA IMPORT
+
+Create repeatable import scripts.
+
+Do not manually paste Scripture into frontend files.
+
+Bible data import should:
+
+read structured source data
+
+normalize book names
+
+validate book order
+
+validate chapter numbers
+
+validate verse numbers
+
+insert records
+
+verify totals
+
+report errors
+
+---
+
+# 52. SCRIPTURE VALIDATION
+
+Automated tests must confirm:
+
+Old Testament = 39 books
+
+New Testament = 27 books
+
+Total = 66 books
+
+Validate expected chapter counts.
+
+Detect:
+
+missing verses
+
+duplicate verses
+
+invalid references
+
+misordered books
+
+Do not silently ignore import failures.
+
+---
+
+# 53. SEED CONTENT
+
+Seed enough curated exploration data to demonstrate the concept exceptionally well.
+
+Do not attempt to manually seed the entire biblical knowledge graph in the first build.
+
+Create rich data for selected demonstration stories.
+
+Recommended seed experiences:
+
+CREATION
+
+ABRAHAM
+
+MOSES / EXODUS
+
+DAVID
+
+BIRTH OF JESUS
+
+CALLING OF THE DISCIPLES
+
+SERMON ON THE MOUNT
+
+CRUCIFIXION
+
+RESURRECTION
+
+PENTECOST
+
+PAUL'S FIRST MISSIONARY JOURNEY
+
+Seed at least:
+
+20+ people
+
+20+ places
+
+15+ events
+
+15+ timeline milestones
+
+1 flagship journey
+
+1 Story Mode path
+
+enough verse relationships to demonstrate the knowledge graph.
+
+---
+
+# 54. ADMIN ARCHITECTURE
+
+Create secure admin-ready architecture.
+
+Future administrators should manage:
+
+people
+
+places
+
+events
+
+timeline events
+
+journeys
+
+journey stops
+
+relationships
+
+historical context
+
+curated AI answers
+
+interpretation material
+
+featured Scripture
+
+But do not spend MVP effort on a polished public admin dashboard.
+
+Create protected administrative APIs and basic internal management capability if practical.
+
+---
+
+# 55. AUTHENTICATION
+
+Implement secure:
+
+email registration
+
+email login
+
+logout
+
+session management
+
+password hashing
+
+protected routes
+
+forgot-password architecture
+
+Email verification architecture
+
+Do not store plaintext passwords.
+
+Use secure cookies or a similarly appropriate secure authentication implementation.
+
+---
+
+# 56. GUEST EXPERIENCE
+
+Allow users to experience enough of the app without creating an account.
+
+Guest users should be able to:
+
+browse Scripture
+
+read passages
+
+explore selected people
+
+explore selected places
+
+use basic map
+
+use basic timeline
+
+Require account for:
+
+bookmarks
+
+notes
+
+persistent progress
+
+personalization
+
+premium AI limits
+
+journey progress
+
+---
+
+# 57. SUBSCRIPTION ARCHITECTURE
+
+Do not put basic Scripture behind a paywall.
+
+Create:
+
+FREE
+
+and
+
+SCROLL+
+
+Do not aggressively interrupt Bible reading with subscription prompts.
+
+---
+
+# 58. FREE TIER
+
+Include:
+
+KJV Bible
+
+Bible search
+
+Flow Reader
+
+Discovery Reader
+
+Basic Explore
+
+Basic people pages
+
+Basic places
+
+Basic timeline
+
+Basic map
+
+Bookmarks
+
+Basic journey sample
+
+Limited Understand This usage
+
+---
+
+# 59. SCROLL+ TIER
+
+Architecture should support premium features such as:
+
+Unlimited or expanded Understand This
+
+Expanded Ask This Passage
+
+Advanced maps
+
+Advanced timelines
+
+Story Mode
+
+Walk the Bible journeys
+
+Then & Now
+
+Advanced historical context
+
+Future Study Mode
+
+Offline journey packages
+
+Family profiles
+
+Premium audio tools
+
+Do not hard-code price deeply into the application.
+
+Store plans/configuration.
+
+---
+
+# 60. BILLING
+
+Create a billing abstraction capable of supporting:
+
+web billing
+
+Apple in-app purchase later
+
+Google Play billing later
+
+For the web MVP, create Stripe-ready architecture.
+
+Do not assume Stripe can handle every future native subscription scenario.
+
+---
+
+# 61. ANALYTICS
+
+Create privacy-conscious analytics.
+
+Track events such as:
+
+app_open
+
+onboarding_started
+
+onboarding_completed
+
+scripture_opened
+
+chapter_opened
+
+discovery_mode_opened
+
+understand_clicked
+
+explore_clicked
+
+person_opened
+
+place_opened
+
+event_opened
+
+timeline_opened
+
+map_opened
+
+journey_started
+
+journey_completed
+
+bookmark_created
+
+search_performed
+
+ask_passage_used
+
+subscription_viewed
+
+trial_started
+
+subscription_started
+
+subscription_cancelled
+
+Do not store unnecessary sensitive data in analytics events.
+
+---
+
+# 62. ONBOARDING
+
+Keep onboarding extremely short.
+
+Screen 1:
+
+# WELCOME TO CHRIST: THE SCROLL
+
+Read the Word. Explore the Story.
+
+Button:
+
+BEGIN
+
+---
+
+Screen 2:
+
+# What brings you to Scripture?
+
+Options:
+
+Read more consistently
+
+Understand Scripture
+
+Study deeper
+
+Learn the biblical story
+
+Explore biblical history
+
+Explore places and people
+
+---
+
+Screen 3:
+
+# Where would you like to begin?
+
+Options:
+
+The Story of Jesus
+
+Start at Genesis
+
+Explore the Bible Story
+
+Biblical Places
+
+People of the Bible
+
+Surprise Me
+
+Allow:
+
+SKIP
+
+Do not force account creation before the user sees value.
+
+---
+
+# 63. FIRST-RUN EXPERIENCE
+
+After onboarding:
+
+Take the user directly into a polished demonstration passage.
+
+Recommended:
+
+Mark 1:16–20
+
+or
+
+Genesis 12:1–9
+
+Show immediately how:
+
+READ
+
+UNDERSTAND
+
+EXPLORE
+
+work.
+
+The user should understand the product's differentiator within 60 seconds.
+
+---
+
+# 64. LANDING PAGE
+
+Build a marketing landing page.
+
+Hero:
+
+# CHRIST: THE SCROLL
+
+## The Bible you can explore.
+
+### Read the Word. Explore the Story.
+
+Buttons:
+
+START EXPLORING
+
+SEE HOW IT WORKS
+
+---
+
+# 65. LANDING PAGE SECTIONS
+
+Include:
+
+Hero
+
+What Makes It Different
+
+Read
+
+Understand
+
+Explore
+
+People
+
+Places
+
+Timeline
+
+Map
+
+Walk the Bible
+
+Story Mode
+
+AI With Scripture Context
+
+Pricing
+
+FAQ
+
+Final CTA
+
+Privacy
+
+Terms
+
+Do not overload the page with text.
+
+---
+
+# 66. MARKETING COPY
+
+Core message:
+
+# EVERY VERSE OPENS ANOTHER DOOR.
+
+Secondary:
+
+Meet the people.
+
+See the places.
+
+Follow the journeys.
+
+Understand the events.
+
+Discover the story.
+
+---
+
+# 67. SHARE CARDS
+
+Allow users to create tasteful Scripture share cards.
+
+Include:
+
+CHRIST: THE SCROLL
+
+Scripture
+
+Reference
+
+Optional:
+
+Explore this passage
+
+Do not automatically add AI interpretation to Scripture share cards.
+
+---
+
+# 68. PRIVACY
+
+Collect the minimum information necessary.
+
+Create pages/placeholders for:
+
+Privacy Policy
+
+Terms
+
+AI Disclaimer
+
+Scripture Copyright / Translation Information
+
+Children / Family Privacy Information for future implementation
+
+Do not imply privacy compliance without proper legal review.
+
+---
+
+# 69. SECURITY
+
+Implement:
+
+environment variables
+
+input validation
+
+authentication protection
+
+rate limits
+
+AI endpoint rate limits
+
+secure headers
+
+CSRF strategy where applicable
+
+SQL injection protections through ORM
+
+authorization checks
+
+password hashing
+
+safe error responses
+
+Never expose:
+
+database credentials
+
+API keys
+
+session secrets
+
+billing keys
+
+AI secrets
+
+---
+
+# 70. ERROR HANDLING
+
+Create polished user-facing states.
+
+Examples:
+
+"We couldn't load this passage."
+
+"AI explanation is temporarily unavailable."
+
+"The map could not be loaded."
+
+"We couldn't find that location."
+
+"No results found."
+
+Never expose raw:
+
+stack traces
+
+database errors
+
+API secrets
+
+internal server details
+
+---
+
+# 71. PERFORMANCE
+
+The Bible reader must feel instantaneous.
+
+Use:
+
+lazy loading
+
+pagination
+
+query caching
+
+database indexing
+
+route code splitting
+
+image optimization
+
+map lazy loading
+
+AI caching
+
+Do not download the entire Bible into the initial browser bundle.
+
+---
+
+# 72. OFFLINE
+
+MVP offline support should prioritize:
+
+previously loaded Scripture
+
+saved/bookmarked passages
+
+basic app shell
+
+Do not promise complete offline maps or AI unless implemented.
+
+---
+
+# 73. TESTING
+
+Create automated tests for:
+
+authentication
+
+66-book validation
+
+Bible retrieval
+
+reference parsing
+
+search
+
+bookmarking
+
+notes
+
+progress
+
+relationship retrieval
+
+people
+
+places
+
+events
+
+timeline
+
+journeys
+
+map data
+
+AI grounding pipeline
+
+authorization
+
+subscription state
+
+---
+
+# 74. AI VALIDATION TESTS
+
+Tests should detect:
+
+fabricated references
+
+empty Scripture context
+
+responses missing AI labeling
+
+modified KJV text
+
+malformed source references
+
+unreasonably long AI output
+
+AI endpoint abuse
+
+---
+
+# 75. RESPONSIVE REQUIREMENTS
+
+Test at:
+
+320px
+
+375px
+
+390px
+
+414px
+
+768px
+
+1024px
+
+1440px
+
+Mobile is primary.
+
+Desktop should still feel elegant.
+
+---
+
+# 76. DIRECTORY STRUCTURE
+
+Use a clean structure similar to:
+
+client/
+
+components/
+
+ui/
+
+scripture/
+
+explore/
+
+map/
+
+timeline/
+
+journeys/
+
+ai/
+
+pages/
+
+features/
+
+home/
+
+bible/
+
+explore/
+
+journeys/
+
+profile/
+
+auth/
+
+subscriptions/
+
+hooks/
+
+services/
+
+lib/
+
+server/
+
+routes/
+
+controllers/
+
+services/
+
+bible/
+
+ai/
+
+search/
+
+maps/
+
+timeline/
+
+journeys/
+
+billing/
+
+repositories/
+
+middleware/
+
+db/
+
+shared/
+
+types/
+
+schemas/
+
+constants/
+
+data/
+
+imports/
+
+seed/
+
+tests/
+
+public/
+
+images/
+
+icons/
+
+---
+
+# 77. API DESIGN
+
+Create clear typed APIs.
+
+Examples:
+
+GET /api/books
+
+GET /api/books/:book/chapters
+
+GET /api/scripture/:book/:chapter
+
+GET /api/scripture/:book/:chapter/:verse
+
+GET /api/explore/verse/:verseId
+
+GET /api/people/:slug
+
+GET /api/places/:slug
+
+GET /api/events/:slug
+
+GET /api/timeline
+
+GET /api/journeys
+
+GET /api/journeys/:slug
+
+GET /api/search?q=
+
+POST /api/ai/explain
+
+POST /api/ai/ask-passage
+
+POST /api/bookmarks
+
+DELETE /api/bookmarks/:id
+
+GET /api/me/progress
+
+PATCH /api/me/progress
+
+Adjust routes as necessary while preserving clean API semantics.
+
+---
+
+# 78. EXPLORE API
+
+A passage exploration endpoint should return a coherent bundle.
+
+Example conceptual response:
+
+verse
+
+people[]
+
+places[]
+
+events[]
+
+timeline[]
+
+crossReferences[]
+
+context[]
+
+journeys[]
+
+beforeEvent
+
+afterEvent
+
+This prevents excessive client round trips.
+
+---
+
+# 79. SLUGS AND DEEP LINKS
+
+Every major entity should support readable URLs.
+
+Examples:
+
+/bible/john/3/16
+
+/people/moses
+
+/places/jerusalem
+
+/events/the-exodus
+
+/timeline/exodus
+
+/journeys/walk-with-jesus
+
+Deep links should be shareable.
+
+---
+
+# 80. LOADING EXPERIENCE
+
+Use skeletons.
+
+Do not use full-screen spinners unnecessarily.
+
+Bible navigation should feel immediate.
+
+Prefetch neighboring chapters where reasonable.
+
+---
+
+# 81. VISUAL MOTION
+
+Use restrained animation.
+
+Good:
+
+soft card transitions
+
+timeline movement
+
+map transitions
+
+journey progress movement
+
+page fades
+
+Avoid:
+
+constant bouncing
+
+excessive parallax
+
+video-game effects
+
+neon effects
+
+religious spectacle
+
+---
+
+# 82. CRITICAL DEVELOPMENT RULES
+
+Do not create fake functionality.
+
+If a feature is not implemented:
+
+Hide it
+
+or clearly label it:
+
+COMING SOON
+
+Every visible MVP primary button must work.
+
+Do not create buttons with no handlers.
+
+Do not return hard-coded fake AI responses pretending they are production APIs.
+
+If development requires a mock adapter:
+
+Clearly isolate it behind an interface.
+
+---
+
+# 83. DEVELOPMENT ORDER
+
+Build in this exact priority unless a dependency requires adjustment.
+
+## PHASE 1 — FOUNDATION
+
+Project architecture
+
+Design system
+
+Database setup
+
+Routing
+
+Authentication foundation
+
+---
+
+## PHASE 2 — BIBLE
+
+Bible schema
+
+KJV import pipeline
+
+Book/chapter/verse APIs
+
+Book navigation
+
+Flow Reader
+
+Discovery Reader
+
+Search
+
+---
+
+## PHASE 3 — KNOWLEDGE GRAPH
+
+People
+
+Places
+
+Events
+
+Timeline
+
+Relationships
+
+Explore Verse API
+
+Explore Verse UI
+
+---
+
+## PHASE 4 — MAP
+
+Map infrastructure
+
+Place markers
+
+Verse → map
+
+Place detail
+
+Event locations
+
+---
+
+## PHASE 5 — TIMELINE
+
+Story timeline
+
+Timeline events
+
+Connections to verses
+
+Connections to people
+
+Connections to places
+
+---
+
+## PHASE 6 — AI
+
+AI abstraction
+
+RAG retrieval
+
+Understand This
+
+Ask This Passage
+
+Caching
+
+AI labels
+
+Grounding validation
+
+---
+
+## PHASE 7 — JOURNEY
+
+Journey schema
+
+Walk With Jesus seed journey
+
+Journey UI
+
+Map connection
+
+Scripture connection
+
+Progress
+
+---
+
+## PHASE 8 — USER FEATURES
+
+Bookmarks
+
+Notes
+
+Reading progress
+
+Exploration history
+
+User preferences
+
+---
+
+## PHASE 9 — MONETIZATION
+
+Subscription architecture
+
+Free/Scroll+ permissions
+
+Web billing adapter
+
+No aggressive paywall interruption
+
+---
+
+## PHASE 10 — PWA
+
+Manifest
+
+Service worker
+
+Offline shell
+
+Installability
+
+Mobile polish
+
+---
+
+## PHASE 11 — QA
+
+Tests
+
+Security
+
+Accessibility
+
+Performance
+
+Responsive QA
+
+Error states
+
+Production cleanup
+
+---
+
+# 84. MVP COMPLETION CRITERIA
+
+Do not declare the build complete until a new user can successfully:
+
+1. Open the landing page.
+
+2. Begin onboarding.
+
+3. Enter the app without mandatory registration.
+
+4. Browse all 66 books.
+
+5. Open a chapter.
+
+6. Read actual KJV Scripture.
+
+7. Switch between Flow and Discovery modes.
+
+8. Search for Scripture.
+
+9. Open a verse.
+
+10. Tap Understand.
+
+11. See Scripture separately from the AI explanation.
+
+12. Tap Explore.
+
+13. See related people.
+
+14. See related places.
+
+15. See related events.
+
+16. See timeline context.
+
+17. Open a person.
+
+18. Open a place.
+
+19. View the place on a map.
+
+20. Open an event.
+
+21. View the biblical timeline.
+
+22. Begin the Walk With Jesus demonstration journey.
+
+23. Move from journey stop to Scripture.
+
+24. Create an account.
+
+25. Log in.
+
+26. Bookmark Scripture.
+
+27. Save reading progress.
+
+28. Return and continue reading.
+
+29. Use Ask This Passage.
+
+30. Receive an answer grounded in Scripture/context.
+
+31. Install the application as a PWA.
+
+32. Use the application comfortably on mobile.
+
+---
+
+# 85. PRODUCT QUALITY TEST
+
+Ask this question when reviewing every feature:
+
+> Does this help someone READ Scripture, UNDERSTAND Scripture, or EXPLORE Scripture?
+
+If the answer is no:
+
+The feature probably does not belong in the MVP.
+
+---
+
+# 86. EXPERIENCE QUALITY TEST
+
+The application should never feel like a database browser.
+
+Relationships should feel like discovery.
+
+Example:
+
+User reads:
+
+Mark 1:16
+
+Then sees:
+
+WHO WAS THERE?
+
+Jesus
+
+Simon Peter
+
+Andrew
+
+WHERE?
+
+Sea of Galilee
+
+WHAT HAPPENED?
+
+Calling of the First Disciples
+
+WHEN?
+
+Early Galilean Ministry
+
+RELATED?
+
+Matthew 4:18–22
+
+Luke 5:1–11
+
+John 1:40–42
+
+WHAT HAPPENS NEXT?
+
+Jesus calls James and John
+
+That is the intended experience.
+
+---
+
+# 87. FINAL PRODUCT STANDARD
+
+The finished application should communicate:
+
+"This is simple enough for someone opening the Bible for the first time."
+
+"This is visually rich enough to make biblical history understandable."
+
+"This is useful enough for experienced Bible readers to discover connections."
+
+"This is technologically modern without making AI the center of the experience."
+
+"This respects the distinction between Scripture and interpretation."
+
+---
+
+# 88. FINAL PRODUCT IDENTITY
+
+The application is:
+
+NOT merely a Bible reader.
+
+NOT merely an AI assistant.
+
+NOT merely a timeline.
+
+NOT merely a Bible map.
+
+NOT merely a devotional app.
+
+It is:
+
+# AN INTERACTIVE WORLD AROUND SCRIPTURE.
+
+The central experience is:
+
+READ
+↓
+UNDERSTAND
+↓
+EXPLORE
+↓
+DISCOVER CONNECTIONS
+↓
+CONTINUE THE STORY
+
+---
+
+# 89. FINAL BUILD INSTRUCTION
+
+Do not stop after generating wireframes.
+
+Do not stop after generating a landing page.
+
+Do not stop after generating sample components.
+
+Do not stop after generating mocked screens.
+
+Build the functioning application.
+
+Connect:
+
+Frontend → Backend
+
+Backend → PostgreSQL
+
+Bible Reader → Scripture Database
+
+Verse → Knowledge Graph
+
+Verse → People
+
+Verse → Places
+
+Verse → Events
+
+Verse → Timeline
+
+Places → Map
+
+Events → Timeline
+
+Journeys → Scripture
+
+AI → Retrieval Layer
+
+Retrieval Layer → Scripture
+
+Bookmarks → Authenticated Users
+
+Progress → Authenticated Users
+
+Subscription → User Entitlements
+
+Make the primary application flow usable from beginning to end.
+
+---
+
+# 90. FIRST BUILD DELIVERABLE
+
+Before attempting every long-term feature, deliver a functioning vertical slice containing:
+
+Landing Page
+
+Onboarding
+
+KJV Bible
+
+Genesis
+
+Matthew
+
+Mark
+
+Luke
+
+John
+
+Flow Reader
+
+Discovery Reader
+
+Search
+
+Explore This Verse
+
+At least 20 people
+
+At least 20 places
+
+At least 15 events
+
+Timeline
+
+Interactive Map
+
+Understand This
+
+Ask This Passage
+
+Walk With Jesus
+
+Authentication
+
+Bookmarks
+
+Progress
+
+PWA functionality
+
+Once that vertical slice works end-to-end, extend Scripture availability to all 66 books and continue expanding curated exploration data.
+
+---
+
+# 91. FINAL COMMAND
+
+Begin implementation now.
+
+First inspect the repository.
+
+If no usable application exists, establish the architecture described above.
+
+If an application already exists, preserve working code where appropriate and refactor only where necessary.
+
+Create the database schema and migrations.
+
+Build actual functional features rather than static mockups.
+
+Seed the first curated biblical exploration dataset.
+
+Implement the end-to-end user experience.
+
+Run the application.
+
+Fix build errors.
+
+Fix TypeScript errors.
+
+Fix broken routes.
+
+Test the principal workflows.
+
+Do not declare completion while critical workflows remain broken.
+
+The defining question for every implementation decision is:
+
+# "HOW DOES THIS HELP THE USER EXPLORE THE WORLD AROUND THIS SCRIPTURE?"
+
+Build:
+
+# CHRIST: THE SCROLL
+
+### Interactive Bible
+
+### Read the Word. Explore the Story.
+
+### Every verse opens another door.

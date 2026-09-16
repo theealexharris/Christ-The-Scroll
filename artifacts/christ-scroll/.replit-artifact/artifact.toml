@@ -1,0 +1,28 @@
+kind = "web"
+previewPath = "/"
+title = "Christ: The Scroll"
+description = "A mobile-first interactive Bible experience that helps people read Scripture, understand its context, and explore the people, places, events, journeys, and timeline around every passage."
+version = "1.0.0"
+id = "artifacts/christ-scroll"
+router = "path"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 18621
+
+[services.development]
+run = "pnpm --filter @workspace/christ-scroll run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/christ-scroll", "run", "build" ]
+serve = "static"
+publicDir = "artifacts/christ-scroll/dist/public"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "18621"
+BASE_PATH = "/"

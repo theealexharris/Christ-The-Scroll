@@ -1,0 +1,732 @@
+openapi: 3.1.0
+info:
+  # Do not change the title, if the title changes, the import paths will be broken
+  title: Api
+  version: 0.1.0
+  description: "API for Christ: The Scroll, an interactive Bible exploration experience."
+servers:
+  - url: /api
+    description: Base API path
+tags:
+  - name: health
+  - name: bible
+  - name: exploration
+  - name: knowledge
+  - name: journeys
+  - name: ai
+  - name: progress
+paths:
+  /healthz:
+    get:
+      operationId: healthCheck
+      tags: [health]
+      summary: Health check
+      responses:
+        "200":
+          description: Healthy
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HealthStatus"
+  /books:
+    get:
+      operationId: listBooks
+      tags: [bible]
+      summary: List the canonical Bible books
+      responses:
+        "200":
+          description: Bible books
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Book"
+  /scripture/{bookSlug}/{chapter}:
+    get:
+      operationId: getChapter
+      tags: [bible]
+      summary: Read a chapter of Scripture
+      parameters:
+        - $ref: "#/components/parameters/BookSlug"
+        - $ref: "#/components/parameters/Chapter"
+      responses:
+        "200":
+          description: Chapter and verses
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Chapter"
+        "404":
+          description: Chapter not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /scripture/{bookSlug}/{chapter}/{verse}:
+    get:
+      operationId: getVerse
+      tags: [bible]
+      summary: Read one verse of Scripture
+      parameters:
+        - $ref: "#/components/parameters/BookSlug"
+        - $ref: "#/components/parameters/Chapter"
+        - $ref: "#/components/parameters/Verse"
+      responses:
+        "200":
+          description: Verse
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Verse"
+        "404":
+          description: Verse not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /explore/verse/{verseId}:
+    get:
+      operationId: getVerseExploration
+      tags: [exploration]
+      summary: Get the connected world around a verse
+      parameters:
+        - in: path
+          name: verseId
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Verse exploration bundle
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/VerseExploration"
+  /people:
+    get:
+      operationId: listPeople
+      tags: [knowledge]
+      summary: List biblical people
+      responses:
+        "200":
+          description: People
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/PersonSummary"
+  /people/{slug}:
+    get:
+      operationId: getPerson
+      tags: [knowledge]
+      summary: Get a biblical person
+      parameters:
+        - $ref: "#/components/parameters/Slug"
+      responses:
+        "200":
+          description: Person
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Person"
+  /places:
+    get:
+      operationId: listPlaces
+      tags: [knowledge]
+      summary: List biblical places
+      responses:
+        "200":
+          description: Places
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/PlaceSummary"
+  /places/{slug}:
+    get:
+      operationId: getPlace
+      tags: [knowledge]
+      summary: Get a biblical place with map context
+      parameters:
+        - $ref: "#/components/parameters/Slug"
+      responses:
+        "200":
+          description: Place
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Place"
+  /events:
+    get:
+      operationId: listEvents
+      tags: [knowledge]
+      summary: List biblical events
+      responses:
+        "200":
+          description: Events
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/EventSummary"
+  /events/{slug}:
+    get:
+      operationId: getEvent
+      tags: [knowledge]
+      summary: Get a biblical event
+      parameters:
+        - $ref: "#/components/parameters/Slug"
+      responses:
+        "200":
+          description: Event
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Event"
+  /timeline:
+    get:
+      operationId: getTimeline
+      tags: [knowledge]
+      summary: Get the biblical story timeline
+      responses:
+        "200":
+          description: Timeline milestones
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/TimelineEvent"
+  /journeys:
+    get:
+      operationId: listJourneys
+      tags: [journeys]
+      summary: List guided biblical journeys
+      responses:
+        "200":
+          description: Journeys
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/JourneySummary"
+  /journeys/{slug}:
+    get:
+      operationId: getJourney
+      tags: [journeys]
+      summary: Get a guided journey
+      parameters:
+        - $ref: "#/components/parameters/Slug"
+      responses:
+        "200":
+          description: Journey
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Journey"
+  /search:
+    get:
+      operationId: searchContent
+      tags: [bible]
+      summary: Search Scripture and connected knowledge
+      parameters:
+        - in: query
+          name: q
+          required: true
+          schema:
+            type: string
+            minLength: 2
+      responses:
+        "200":
+          description: Grouped search results
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SearchResults"
+  /ai/explain:
+    post:
+      operationId: explainPassage
+      tags: [ai]
+      summary: Explain a passage using retrieved Scripture context
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PassageRequest"
+      responses:
+        "200":
+          description: Grounded explanation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AIExplanation"
+  /ai/ask-passage:
+    post:
+      operationId: askPassage
+      tags: [ai]
+      summary: Ask a question about the current passage
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PassageQuestion"
+      responses:
+        "200":
+          description: Grounded answer
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AIAnswer"
+  /me/progress:
+    get:
+      operationId: getProgress
+      tags: [progress]
+      summary: Get reading progress
+      responses:
+        "200":
+          description: Progress
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ReadingProgress"
+    patch:
+      operationId: updateProgress
+      tags: [progress]
+      summary: Save reading progress
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ProgressInput"
+      responses:
+        "200":
+          description: Updated progress
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ReadingProgress"
+components:
+  parameters:
+    Slug:
+      in: path
+      name: slug
+      required: true
+      schema:
+        type: string
+    BookSlug:
+      in: path
+      name: bookSlug
+      required: true
+      schema:
+        type: string
+    Chapter:
+      in: path
+      name: chapter
+      required: true
+      schema:
+        type: integer
+        minimum: 1
+    Verse:
+      in: path
+      name: verse
+      required: true
+      schema:
+        type: integer
+        minimum: 1
+  schemas:
+    HealthStatus:
+      type: object
+      properties:
+        status:
+          type: string
+      required: [status]
+    Error:
+      type: object
+      properties:
+        error:
+          type: string
+      required: [error]
+    Book:
+      type: object
+      properties:
+        id:
+          type: string
+        slug:
+          type: string
+        name:
+          type: string
+        testament:
+          type: string
+          enum: [old, new]
+        category:
+          type: string
+        chapterCount:
+          type: integer
+      required: [id, slug, name, testament, category, chapterCount]
+    Verse:
+      type: object
+      properties:
+        id:
+          type: string
+        bookSlug:
+          type: string
+        bookName:
+          type: string
+        chapter:
+          type: integer
+        verse:
+          type: integer
+        text:
+          type: string
+        reference:
+          type: string
+        translation:
+          type: string
+      required: [id, bookSlug, bookName, chapter, verse, text, reference, translation]
+    Chapter:
+      type: object
+      properties:
+        book:
+          $ref: "#/components/schemas/Book"
+        chapter:
+          type: integer
+        verses:
+          type: array
+          items:
+            $ref: "#/components/schemas/Verse"
+      required: [book, chapter, verses]
+    PersonSummary:
+      type: object
+      properties:
+        slug:
+          type: string
+        name:
+          type: string
+        role:
+          type: string
+        description:
+          type: string
+      required: [slug, name, role, description]
+    Person:
+      allOf:
+        - $ref: "#/components/schemas/PersonSummary"
+        - type: object
+          properties:
+            scriptureReferences:
+              type: array
+              items:
+                type: string
+            places:
+              type: array
+              items:
+                $ref: "#/components/schemas/PlaceSummary"
+            events:
+              type: array
+              items:
+                $ref: "#/components/schemas/EventSummary"
+            timeline:
+              type: array
+              items:
+                $ref: "#/components/schemas/TimelineEvent"
+          required: [scriptureReferences, places, events, timeline]
+    PlaceSummary:
+      type: object
+      properties:
+        slug:
+          type: string
+        name:
+          type: string
+        region:
+          type: string
+        confidence:
+          type: string
+          enum: [known, traditional, approximate, disputed]
+      required: [slug, name, region, confidence]
+    Place:
+      allOf:
+        - $ref: "#/components/schemas/PlaceSummary"
+        - type: object
+          properties:
+            ancientName:
+              type: string
+            latitude:
+              type: number
+            longitude:
+              type: number
+            historicalNotes:
+              type: string
+            scriptureReferences:
+              type: array
+              items:
+                type: string
+            people:
+              type: array
+              items:
+                $ref: "#/components/schemas/PersonSummary"
+            events:
+              type: array
+              items:
+                $ref: "#/components/schemas/EventSummary"
+          required: [ancientName, latitude, longitude, historicalNotes, scriptureReferences, people, events]
+    EventSummary:
+      type: object
+      properties:
+        slug:
+          type: string
+        name:
+          type: string
+        summary:
+          type: string
+        period:
+          type: string
+      required: [slug, name, summary, period]
+    Event:
+      allOf:
+        - $ref: "#/components/schemas/EventSummary"
+        - type: object
+          properties:
+            scriptureReferences:
+              type: array
+              items:
+                type: string
+            people:
+              type: array
+              items:
+                $ref: "#/components/schemas/PersonSummary"
+            places:
+              type: array
+              items:
+                $ref: "#/components/schemas/PlaceSummary"
+            before:
+              type: string
+            after:
+              type: string
+          required: [scriptureReferences, people, places, before, after]
+    TimelineEvent:
+      type: object
+      properties:
+        slug:
+          type: string
+        title:
+          type: string
+        period:
+          type: string
+        dateLabel:
+          type: string
+        description:
+          type: string
+        scriptureReferences:
+          type: array
+          items:
+            type: string
+      required: [slug, title, period, dateLabel, description, scriptureReferences]
+    JourneySummary:
+      type: object
+      properties:
+        slug:
+          type: string
+        title:
+          type: string
+        subtitle:
+          type: string
+        stopCount:
+          type: integer
+        durationLabel:
+          type: string
+      required: [slug, title, subtitle, stopCount, durationLabel]
+    JourneyStop:
+      type: object
+      properties:
+        title:
+          type: string
+        location:
+          type: string
+        description:
+          type: string
+        scriptureReferences:
+          type: array
+          items:
+            type: string
+        placeSlug:
+          type: string
+      required: [title, location, description, scriptureReferences, placeSlug]
+    Journey:
+      allOf:
+        - $ref: "#/components/schemas/JourneySummary"
+        - type: object
+          properties:
+            stops:
+              type: array
+              items:
+                $ref: "#/components/schemas/JourneyStop"
+          required: [stops]
+    VerseExploration:
+      type: object
+      properties:
+        verse:
+          $ref: "#/components/schemas/Verse"
+        people:
+          type: array
+          items:
+            $ref: "#/components/schemas/PersonSummary"
+        places:
+          type: array
+          items:
+            $ref: "#/components/schemas/PlaceSummary"
+        events:
+          type: array
+          items:
+            $ref: "#/components/schemas/EventSummary"
+        timeline:
+          type: array
+          items:
+            $ref: "#/components/schemas/TimelineEvent"
+        relatedScripture:
+          type: array
+          items:
+            type: string
+        context:
+          type: string
+        beforeEvent:
+          type: string
+        afterEvent:
+          type: string
+      required: [verse, people, places, events, timeline, relatedScripture, context, beforeEvent, afterEvent]
+    SearchResults:
+      type: object
+      properties:
+        scripture:
+          type: array
+          items:
+            $ref: "#/components/schemas/Verse"
+        people:
+          type: array
+          items:
+            $ref: "#/components/schemas/PersonSummary"
+        places:
+          type: array
+          items:
+            $ref: "#/components/schemas/PlaceSummary"
+        events:
+          type: array
+          items:
+            $ref: "#/components/schemas/EventSummary"
+        journeys:
+          type: array
+          items:
+            $ref: "#/components/schemas/JourneySummary"
+      required: [scripture, people, places, events, journeys]
+    PassageRequest:
+      type: object
+      properties:
+        verseId:
+          type: string
+        passage:
+          type: string
+        reference:
+          type: string
+      required: [verseId, passage, reference]
+    PassageQuestion:
+      type: object
+      properties:
+        verseId:
+          type: string
+        passage:
+          type: string
+        reference:
+          type: string
+        question:
+          type: string
+      required: [verseId, passage, reference, question]
+    SourceReference:
+      type: object
+      properties:
+        label:
+          type: string
+        reference:
+          type: string
+      required: [label, reference]
+    AIExplanation:
+      type: object
+      properties:
+        reference:
+          type: string
+        scripture:
+          type: string
+        simpleWords:
+          type: string
+        whyItMatters:
+          type: string
+        sources:
+          type: array
+          items:
+            $ref: "#/components/schemas/SourceReference"
+        label:
+          type: string
+          enum: [AI-assisted explanation]
+      required: [reference, scripture, simpleWords, whyItMatters, sources, label]
+    AIAnswer:
+      type: object
+      properties:
+        shortAnswer:
+          type: string
+        scripture:
+          type: array
+          items:
+            type: string
+        context:
+          type: string
+        explanation:
+          type: string
+        exploreNext:
+          type: array
+          items:
+            type: string
+        sources:
+          type: array
+          items:
+            $ref: "#/components/schemas/SourceReference"
+        label:
+          type: string
+          enum: [AI-assisted answer]
+      required: [shortAnswer, scripture, context, explanation, exploreNext, sources, label]
+    ReadingProgress:
+      type: object
+      properties:
+        bookSlug:
+          type: string
+        chapter:
+          type: integer
+        verse:
+          type: integer
+        percent:
+          type: integer
+          minimum: 0
+          maximum: 100
+        lastReference:
+          type: string
+      required: [bookSlug, chapter, verse, percent, lastReference]
+    ProgressInput:
+      type: object
+      properties:
+        bookSlug:
+          type: string
+        chapter:
+          type: integer
+        verse:
+          type: integer
+        percent:
+          type: integer
+          minimum: 0
+          maximum: 100
+        lastReference:
+          type: string
+      required: [bookSlug, chapter, verse, percent, lastReference]
