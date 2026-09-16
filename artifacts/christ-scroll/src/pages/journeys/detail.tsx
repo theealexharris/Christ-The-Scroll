@@ -1,12 +1,21 @@
 import { useState } from 'react';
 import { useParams, Link } from 'wouter';
-import { useGetJourney } from '@workspace/api-client-react';
+import { useGetJourney, useSetJourneyProgress } from '@workspace/api-client-react';
 import { ChevronLeft, MapPin, ArrowRight, ArrowLeft } from 'lucide-react';
 
 export default function JourneyDetail() {
   const { slug } = useParams<{ slug: string }>();
   const { data: journey, isLoading } = useGetJourney(slug || '');
-  const [currentStopIndex, setCurrentStopIndex] = useState(0);
+  const [currentStopIndex, setCurrentStopIndexState] = useState(0);
+  const setJourneyProgress = useSetJourneyProgress();
+
+  const setCurrentStopIndex = (updater: (i: number) => number) => {
+    setCurrentStopIndexState((prev) => {
+      const next = updater(prev);
+      if (slug) setJourneyProgress.mutate({ slug, data: { currentStopIndex: next } });
+      return next;
+    });
+  };
 
   if (isLoading) {
     return <div className="p-10 text-center text-muted-foreground animate-pulse">Loading journey...</div>;

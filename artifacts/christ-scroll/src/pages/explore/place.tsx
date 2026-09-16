@@ -1,6 +1,7 @@
 import { useParams, Link } from 'wouter';
 import { useGetPlace } from '@workspace/api-client-react';
 import { MapPin, ChevronLeft, Map as MapIcon } from 'lucide-react';
+import { BookmarkButton } from '@/components/bookmark-button';
 
 export default function PlaceDetail() {
   const { slug } = useParams<{ slug: string }>();
@@ -34,14 +35,17 @@ export default function PlaceDetail() {
            </div>
         </div>
 
-        <div className="mb-8">
-          <div className="inline-flex items-center rounded-full bg-secondary px-2.5 py-0.5 text-xs font-semibold text-muted-foreground mb-4 uppercase tracking-wider">
-            {place.region} &bull; {place.confidence} location
+        <div className="mb-8 flex items-start justify-between gap-4">
+          <div>
+            <div className="inline-flex items-center rounded-full bg-secondary px-2.5 py-0.5 text-xs font-semibold text-muted-foreground mb-4 uppercase tracking-wider">
+              {place.region} &bull; {place.confidence} location
+            </div>
+            <h1 className="font-serif text-4xl font-medium text-foreground mb-1">{place.name}</h1>
+            {place.ancientName && place.ancientName !== place.name && (
+              <p className="text-lg text-muted-foreground italic">Anciently known as {place.ancientName}</p>
+            )}
           </div>
-          <h1 className="font-serif text-4xl font-medium text-foreground mb-1">{place.name}</h1>
-          {place.ancientName && place.ancientName !== place.name && (
-            <p className="text-lg text-muted-foreground italic">Anciently known as {place.ancientName}</p>
-          )}
+          <BookmarkButton targetType="place" targetRef={slug || ''} />
         </div>
 
         <div className="prose prose-lg dark:prose-invert font-serif text-foreground leading-relaxed mb-12">

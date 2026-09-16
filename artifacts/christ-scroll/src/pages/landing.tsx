@@ -13,7 +13,7 @@ export default function Landing() {
           </span>
         </div>
         <Link
-          href="/home"
+          href="/login"
           className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
         >
           Sign In
