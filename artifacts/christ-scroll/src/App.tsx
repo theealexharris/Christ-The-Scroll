@@ -21,6 +21,8 @@ import EventDetail from './pages/explore/event';
 import JourneysList from './pages/journeys/list';
 import JourneyDetail from './pages/journeys/detail';
 import Profile from './pages/profile';
+import Login from './pages/auth/login';
+import Register from './pages/auth/register';
 
 const queryClient = new QueryClient();
 
@@ -31,6 +33,8 @@ function Router() {
         {/* Un-shelled routes */}
         <Route path="/" component={Landing} />
         <Route path="/onboarding" component={Onboarding} />
+        <Route path="/login" component={Login} />
+        <Route path="/register" component={Register} />
 
         {/* Shelled routes */}
         <Route path="/home">

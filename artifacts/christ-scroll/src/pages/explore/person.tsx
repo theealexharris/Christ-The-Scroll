@@ -1,6 +1,7 @@
 import { useParams, Link } from 'wouter';
 import { useGetPerson } from '@workspace/api-client-react';
 import { Users, ChevronLeft, MapPin, Calendar } from 'lucide-react';
+import { BookmarkButton } from '@/components/bookmark-button';
 
 export default function PersonDetail() {
   const { slug } = useParams<{ slug: string }>();
@@ -32,6 +33,7 @@ export default function PersonDetail() {
             <h1 className="font-serif text-4xl font-medium text-foreground">{person.name}</h1>
             <p className="text-lg text-muted-foreground uppercase tracking-widest font-medium mt-1">{person.role}</p>
           </div>
+          <BookmarkButton targetType="person" targetRef={slug || ''} className="ml-auto flex h-9 w-9 items-center justify-center rounded-full border border-border bg-card text-muted-foreground transition-colors hover:bg-secondary" />
         </div>
 
         <div className="prose prose-lg dark:prose-invert font-serif text-foreground leading-relaxed mb-12">

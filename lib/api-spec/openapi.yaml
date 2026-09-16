@@ -15,6 +15,8 @@ tags:
   - name: journeys
   - name: ai
   - name: progress
+  - name: auth
+  - name: bookmarks
 paths:
   /healthz:
     get:
@@ -229,6 +231,22 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Journey"
+  /journeys/{slug}/progress:
+    put:
+      operationId: setJourneyProgress
+      tags: [journeys]
+      summary: Save which stop the current visitor or signed-in user has reached
+      parameters:
+        - $ref: "#/components/parameters/Slug"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/JourneyProgressInput"
+      responses:
+        "204":
+          description: Saved
   /search:
     get:
       operationId: searchContent
@@ -313,6 +331,198 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ReadingProgress"
+  /me/stats:
+    get:
+      operationId: getStats
+      tags: [progress]
+      summary: Get real reading statistics for the current visitor or signed-in user
+      responses:
+        "200":
+          description: Reading stats
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ReadingStats"
+  /me/plan:
+    get:
+      operationId: getReadingPlan
+      tags: [progress]
+      summary: Get the current custom reading plan, if any
+      responses:
+        "200":
+          description: Reading plan, or null if none is set
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ReadingPlan"
+        "404":
+          description: No reading plan set
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    put:
+      operationId: setReadingPlan
+      tags: [progress]
+      summary: Create or replace the custom reading plan
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ReadingPlanInput"
+      responses:
+        "200":
+          description: Saved reading plan
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ReadingPlan"
+  /auth/register:
+    post:
+      operationId: register
+      tags: [auth]
+      summary: Create an account
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RegisterInput"
+      responses:
+        "201":
+          description: Account created and signed in
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AuthUser"
+        "400":
+          description: Invalid email or password
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "409":
+          description: Email already registered
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /auth/login:
+    post:
+      operationId: login
+      tags: [auth]
+      summary: Sign in
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LoginInput"
+      responses:
+        "200":
+          description: Signed in
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AuthUser"
+        "401":
+          description: Invalid email or password
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /auth/logout:
+    post:
+      operationId: logout
+      tags: [auth]
+      summary: Sign out
+      responses:
+        "204":
+          description: Signed out
+  /auth/me:
+    get:
+      operationId: getCurrentUser
+      tags: [auth]
+      summary: Get the signed-in user, if any
+      responses:
+        "200":
+          description: Current user
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AuthUser"
+        "401":
+          description: Not signed in
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /bookmarks:
+    get:
+      operationId: listBookmarks
+      tags: [bookmarks]
+      summary: List the signed-in user's bookmarks
+      responses:
+        "200":
+          description: Bookmarks
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Bookmark"
+        "401":
+          description: Not signed in
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    post:
+      operationId: createBookmark
+      tags: [bookmarks]
+      summary: Bookmark a verse, person, place, event, or journey
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/BookmarkInput"
+      responses:
+        "201":
+          description: Created bookmark
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Bookmark"
+        "401":
+          description: Not signed in
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /bookmarks/{id}:
+    delete:
+      operationId: deleteBookmark
+      tags: [bookmarks]
+      summary: Remove a bookmark
+      parameters:
+        - $ref: "#/components/parameters/BookmarkId"
+      responses:
+        "204":
+          description: Deleted
+        "401":
+          description: Not signed in
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "404":
+          description: Bookmark not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
 components:
   parameters:
     Slug:
@@ -341,6 +551,12 @@ components:
       schema:
         type: integer
         minimum: 1
+    BookmarkId:
+      in: path
+      name: id
+      required: true
+      schema:
+        type: integer
   schemas:
     HealthStatus:
       type: object
@@ -730,3 +946,97 @@ components:
         lastReference:
           type: string
       required: [bookSlug, chapter, verse, percent, lastReference]
+    ReadingStats:
+      type: object
+      properties:
+        chaptersRead:
+          type: integer
+        booksStarted:
+          type: integer
+        journeysStarted:
+          type: integer
+        readingSince:
+          type: string
+          format: date-time
+          nullable: true
+      required: [chaptersRead, booksStarted, journeysStarted, readingSince]
+    ReadingPlan:
+      type: object
+      properties:
+        bookSlug:
+          type: string
+        dailyMinutes:
+          type: integer
+          minimum: 1
+        startedAt:
+          type: string
+          format: date-time
+      required: [bookSlug, dailyMinutes, startedAt]
+    ReadingPlanInput:
+      type: object
+      properties:
+        bookSlug:
+          type: string
+        dailyMinutes:
+          type: integer
+          minimum: 1
+      required: [bookSlug, dailyMinutes]
+    AuthUser:
+      type: object
+      properties:
+        id:
+          type: string
+        email:
+          type: string
+          format: email
+      required: [id, email]
+    RegisterInput:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+          minLength: 8
+      required: [email, password]
+    LoginInput:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+          minLength: 8
+      required: [email, password]
+    Bookmark:
+      type: object
+      properties:
+        id:
+          type: integer
+        targetType:
+          type: string
+          enum: [verse, person, place, event, journey]
+        targetRef:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+      required: [id, targetType, targetRef, createdAt]
+    BookmarkInput:
+      type: object
+      properties:
+        targetType:
+          type: string
+          enum: [verse, person, place, event, journey]
+        targetRef:
+          type: string
+      required: [targetType, targetRef]
+    JourneyProgressInput:
+      type: object
+      properties:
+        currentStopIndex:
+          type: integer
+          minimum: 0
+      required: [currentStopIndex]

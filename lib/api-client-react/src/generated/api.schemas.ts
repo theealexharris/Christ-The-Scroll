@@ -227,6 +227,82 @@ export interface ProgressInput {
   lastReference: string;
 }
 
+export interface ReadingStats {
+  chaptersRead: number;
+  booksStarted: number;
+  journeysStarted: number;
+  readingSince: string | null;
+}
+
+export interface ReadingPlan {
+  bookSlug: string;
+  /** @minimum 1 */
+  dailyMinutes: number;
+  startedAt: string;
+}
+
+export interface ReadingPlanInput {
+  bookSlug: string;
+  /** @minimum 1 */
+  dailyMinutes: number;
+}
+
+export interface AuthUser {
+  id: string;
+  email: string;
+}
+
+export interface RegisterInput {
+  email: string;
+  /** @minLength 8 */
+  password: string;
+}
+
+export interface LoginInput {
+  email: string;
+  /** @minLength 8 */
+  password: string;
+}
+
+export type BookmarkTargetType = typeof BookmarkTargetType[keyof typeof BookmarkTargetType];
+
+
+export const BookmarkTargetType = {
+  verse: 'verse',
+  person: 'person',
+  place: 'place',
+  event: 'event',
+  journey: 'journey',
+} as const;
+
+export interface Bookmark {
+  id: number;
+  targetType: BookmarkTargetType;
+  targetRef: string;
+  createdAt: string;
+}
+
+export type BookmarkInputTargetType = typeof BookmarkInputTargetType[keyof typeof BookmarkInputTargetType];
+
+
+export const BookmarkInputTargetType = {
+  verse: 'verse',
+  person: 'person',
+  place: 'place',
+  event: 'event',
+  journey: 'journey',
+} as const;
+
+export interface BookmarkInput {
+  targetType: BookmarkInputTargetType;
+  targetRef: string;
+}
+
+export interface JourneyProgressInput {
+  /** @minimum 0 */
+  currentStopIndex: number;
+}
+
 export type SearchContentParams = {
 /**
  * @minLength 2
