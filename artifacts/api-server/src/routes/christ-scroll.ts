@@ -54,7 +54,12 @@ function getOrCreateVisitorId(req: Request, res: Response): string {
   const existing = req.cookies?.[VISITOR_COOKIE];
   if (typeof existing === "string" && existing.length > 0) return existing;
   const id = randomUUID();
-  res.cookie(VISITOR_COOKIE, id, { httpOnly: true, sameSite: "lax", maxAge: ONE_YEAR_MS });
+  res.cookie(VISITOR_COOKIE, id, {
+    httpOnly: true,
+    sameSite: "lax",
+    secure: process.env.NODE_ENV === "production",
+    maxAge: ONE_YEAR_MS,
+  });
   return id;
 }
 
