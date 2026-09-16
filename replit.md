@@ -13,6 +13,16 @@ An interactive Bible exploration app. Readers move through Scripture alongside t
 - Required env: `DATABASE_URL` — Postgres connection string
 - Optional env: `ANTHROPIC_API_KEY` — enables real AI answers on `/ai/explain` and `/ai/ask-passage`; without it, those endpoints fall back to fixed sample copy
 
+## Deploying (e.g. Render)
+
+One web service hosts both the API and the built frontend — `artifacts/api-server/src/app.ts` serves `artifacts/christ-scroll/dist/public` as static files (falling back to `index.html` for client-side routes) behind the same `/api` routes.
+
+- Build Command: `pnpm install --frozen-lockfile && PORT=5000 BASE_PATH=/ pnpm run build` — the frontend's Vite config requires `PORT`/`BASE_PATH` to exist at build time (it validates them even though this build's output doesn't use `PORT`); the value doesn't matter, but `BASE_PATH` must be `/` so asset URLs resolve correctly when served from this service's root. These are build-time only — don't set `PORT` as a persistent env var, since the platform injects its own `PORT` for the running service and the app must bind to that.
+- Start Command: `pnpm --filter @workspace/api-server run start`
+- Root Directory: leave blank (commands need to run from the repo root to resolve the pnpm workspace)
+- Env vars on the service itself: `DATABASE_URL`, `ANTHROPIC_API_KEY`
+- After the first deploy, seed the production database once (from your machine, pointed at the deployed `DATABASE_URL`): `pnpm --filter db run push && pnpm --filter db run seed`
+
 ## Stack
 
 - pnpm workspaces, Node.js 24, TypeScript 5.9
