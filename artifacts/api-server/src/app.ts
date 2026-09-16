@@ -43,7 +43,7 @@ app.use("/api", router);
 // Serve the built React app for everything else, so this one service hosts both the API and the UI.
 app.use(express.static(frontendDist));
 app.use((req: Request, res: Response, next: NextFunction) => {
-  if (req.method !== "GET" || req.path.startsWith("/api/")) return next();
+  if (req.method !== "GET" || req.path === "/api" || req.path.startsWith("/api/")) return next();
   res.sendFile(path.join(frontendDist, "index.html"));
 });
 
