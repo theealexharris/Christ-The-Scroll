@@ -1,3 +1,6 @@
+import { readFileSync } from "node:fs";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
 import { db, pool } from "./index";
 import {
   booksTable,
@@ -10,6 +13,13 @@ import {
   type InsertBook,
   type InsertVerse,
 } from "./schema";
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+
+// Full King James Version text (66 books, 1,189 chapters, 31,100 verses).
+// See ./data/KJV-SOURCE.md for provenance and license.
+type KjvBook = { name: string; abbrev: string; chapters: string[][] };
+const kjvBooks: KjvBook[] = JSON.parse(readFileSync(path.join(__dirname, "data/kjv.json"), "utf-8").replace(/^﻿/, ""));
 
 const rawBooks: Array<[string, string, "old" | "new", string, number]> = [
   ["genesis", "Genesis", "old", "Law", 50], ["exodus", "Exodus", "old", "Law", 40],
@@ -46,56 +56,6 @@ const rawBooks: Array<[string, string, "old" | "new", string, number]> = [
   ["2-john", "2 John", "new", "General Letters", 1], ["3-john", "3 John", "new", "General Letters", 1],
   ["jude", "Jude", "new", "General Letters", 1], ["revelation", "Revelation", "new", "Prophecy", 22],
 ];
-
-const chapterTexts: Record<string, string[]> = {
-  "genesis:1": [
-    "In the beginning God created the heaven and the earth.",
-    "And the earth was without form, and void; and darkness was upon the face of the deep. And the Spirit of God moved upon the face of the waters.",
-    "And God said, Let there be light: and there was light.",
-    "And God saw the light, that it was good: and God divided the light from the darkness.",
-    "And God called the light Day, and the darkness he called Night. And the evening and the morning were the first day.",
-  ],
-  "matthew:4": [
-    "Then was Jesus led up of the Spirit into the wilderness to be tempted of the devil.",
-    "And when he had fasted forty days and forty nights, he was afterward an hungred.",
-    "And when the tempter came to him, he said, If thou be the Son of God, command that these stones be made bread.",
-    "But he answered and said, It is written, Man shall not live by bread alone, but by every word that proceedeth out of the mouth of God.",
-  ],
-  "mark:1": [
-    "The beginning of the gospel of Jesus Christ, the Son of God;",
-    "As it is written in the prophets, Behold, I send my messenger before thy face, which shall prepare thy way before thee.",
-    "The voice of one crying in the wilderness, Prepare ye the way of the Lord, make his paths straight.",
-    "John did baptize in the wilderness, and preach the baptism of repentance for the remission of sins.",
-    "And there went out unto him all the land of Judaea, and they of Jerusalem, and were all baptized of him in the river of Jordan, confessing their sins.",
-    "And John was clothed with camel's hair, and with a girdle of a skin about his loins; and he did eat locusts and wild honey;",
-    "And preached, saying, There cometh one mightier than I after me, the latchet of whose shoes I am not worthy to stoop down and unloose.",
-    "I indeed have baptized you with water: but he shall baptize you with the Holy Ghost.",
-    "And it came to pass in those days, that Jesus came from Nazareth of Galilee, and was baptized of John in Jordan.",
-    "And straightway coming up out of the water, he saw the heavens opened, and the Spirit like a dove descending upon him:",
-    "And there came a voice from heaven, saying, Thou art my beloved Son, in whom I am well pleased.",
-    "And immediately the Spirit driveth him into the wilderness.",
-    "And he was there in the wilderness forty days, tempted of Satan; and was with the wild beasts; and the angels ministered unto him.",
-    "Now after that John was put in prison, Jesus came into Galilee, preaching the gospel of the kingdom of God,",
-    "And saying, The time is fulfilled, and the kingdom of God is at hand: repent ye, and believe the gospel.",
-    "Now as he walked by the sea of Galilee, he saw Simon and Andrew his brother casting a net into the sea: for they were fishers.",
-    "And Jesus said unto them, Come ye after me, and I will make you to become fishers of men.",
-    "And straightway they forsook their nets, and followed him.",
-    "And when he had gone a little farther thence, he saw James the son of Zebedee, and John his brother, who also were in the ship mending their nets.",
-    "And straightway he called them: and they left their father Zebedee in the ship with the hired servants, and went after him.",
-  ],
-  "luke:2": [
-    "And it came to pass in those days, that there went out a decree from Caesar Augustus that all the world should be taxed.",
-    "And this taxing was first made when Cyrenius was governor of Syria.",
-    "And all went to be taxed, every one into his own city.",
-    "And Joseph also went up from Galilee, out of the city of Nazareth, into Judaea, unto the city of David, which is called Bethlehem;",
-  ],
-  "john:3": [
-    "There was a man of the Pharisees, named Nicodemus, a ruler of the Jews:",
-    "The same came to Jesus by night, and said unto him, Rabbi, we know that thou art a teacher come from God: for no man can do these miracles that thou doest, except God be with him.",
-    "Jesus answered and said unto him, Verily, verily, I say unto thee, Except a man be born again, he cannot see the kingdom of God.",
-    "For God so loved the world, that he gave his only begotten Son, that whosoever believeth in him should not perish, but have everlasting life.",
-  ],
-};
 
 const rawPeople: Array<[string, string, string]> = [
   ["jesus", "Jesus", "Messiah • Son of God"], ["simon-peter", "Simon Peter", "Disciple • Apostle"],
@@ -163,26 +123,33 @@ async function seed() {
   }));
   await db.insert(booksTable).values(books).onConflictDoNothing();
 
-  const bookBySlug = new Map(books.map((book) => [book.slug, book]));
-  const verses: InsertVerse[] = Object.entries(chapterTexts).flatMap(([key, texts]) => {
-    const [bookSlug, chapterRaw] = key.split(":");
-    const chapter = Number(chapterRaw);
-    const book = bookBySlug.get(bookSlug);
-    if (!book) return [];
-    return texts.map((text, index) => {
-      const verse = index + 1;
-      return {
-        id: `${bookSlug}-${chapter}-${verse}`,
-        bookSlug,
-        chapter,
-        verse,
-        text,
-        reference: `${book.name} ${chapter}:${verse}`,
-        translation: "KJV",
-      };
+  // kjvBooks and `books` are both in canonical Bible order (verified against
+  // book names and chapter counts when the dataset was added), so we zip by
+  // index rather than matching by name.
+  const verses: InsertVerse[] = books.flatMap((book, bookIndex) => {
+    const kjvBook = kjvBooks[bookIndex];
+    if (!kjvBook) return [];
+    return kjvBook.chapters.flatMap((chapterVerses, chapterIndex) => {
+      const chapter = chapterIndex + 1;
+      return chapterVerses.map((text, verseIndex) => {
+        const verse = verseIndex + 1;
+        return {
+          id: `${book.slug}-${chapter}-${verse}`,
+          bookSlug: book.slug,
+          chapter,
+          verse,
+          text,
+          reference: `${book.name} ${chapter}:${verse}`,
+          translation: "KJV",
+        };
+      });
     });
   });
-  await db.insert(versesTable).values(verses).onConflictDoNothing();
+
+  const VERSE_BATCH_SIZE = 2000;
+  for (let i = 0; i < verses.length; i += VERSE_BATCH_SIZE) {
+    await db.insert(versesTable).values(verses.slice(i, i + VERSE_BATCH_SIZE)).onConflictDoNothing();
+  }
 
   const people = rawPeople.map(([slug, name, role]) => ({
     slug, name, role,

@@ -76,7 +76,7 @@ export async function getChapter(bookSlug: string, chapter: number): Promise<Cha
     .where(and(eq(versesTable.bookSlug, bookSlug), eq(versesTable.chapter, chapter)))
     .orderBy(asc(versesTable.verse));
 
-  // Fall back to a sample passage when this exact chapter hasn't been transcribed yet.
+  // Fall back to a sample passage for an out-of-range chapter number rather than a bare 404.
   if (verseRows.length === 0) {
     verseRows = await db
       .select()

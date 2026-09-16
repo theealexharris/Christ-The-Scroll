@@ -30,6 +30,7 @@ An interactive Bible exploration app. Readers move through Scripture alongside t
 - `lib/api-zod` — generated Zod schemas + TanStack Query hooks (`pnpm --filter @workspace/api-spec run codegen` to regenerate)
 - `lib/db/src/schema` — Drizzle tables: `books.ts` (books + verses), `people.ts`, `places.ts`, `events.ts`, `journeys.ts` (journeys + stops), `progress.ts` (per-visitor reading progress)
 - `lib/db/src/seed.ts` — seeds the tables above with the app's Scripture/people/places/events content
+- `lib/db/src/data/kjv.json` — full King James Version text (66 books, 1,189 chapters, 31,100 verses); see `KJV-SOURCE.md` in the same directory for provenance/license
 - `artifacts/api-server/src/data/christ-scroll.ts` — data-access layer the API routes call into; every function here queries Postgres
 - `artifacts/api-server/src/routes/christ-scroll.ts` — HTTP routes
 - `artifacts/api-server/src/lib/ai.ts` — Anthropic calls for the explain/ask-passage endpoints
@@ -40,11 +41,11 @@ An interactive Bible exploration app. Readers move through Scripture alongside t
 - Reading progress is keyed by an anonymous `cts_visitor_id` cookie rather than a login system — there's no account/auth flow in the product yet, so progress is per-browser, not per-person.
 - `/ai/explain` and `/ai/ask-passage` never fail outright when the AI call fails or `ANTHROPIC_API_KEY` is unset — they fall back to fixed sample copy so the UI always has something to render. Real AI output silently takes over once the key is configured.
 - Cross-references shown on Explore pages (e.g. "people connected to this place") aren't backed by real relational data — the seeded content doesn't encode true relationships, so those lists are a representative slice of the corresponding table, matching the original design.
-- Only a handful of chapters have real KJV verse text seeded (Genesis 1, Matthew 4, Mark 1, Luke 2, John 3). Any other chapter falls back to displaying Mark 1 rather than a full transcription — the app doesn't yet ship a complete Bible text.
+- The full KJV text is seeded from a static JSON file checked into the repo (`lib/db/src/data/kjv.json`) rather than fetched from an external API at seed time, so seeding works offline and isn't dependent on a third-party service staying up.
 
 ## Product
 
-- **Bible reader/browser** — browse all 66 books by testament, read seeded chapters verse by verse.
+- **Bible reader/browser** — browse all 66 books by testament, read the full King James Version verse by verse.
 - **Explore** — look up a person, place, or event and see related Scripture, people, places, and timeline entries.
 - **Journeys** — a guided, ordered walk through a set of Scripture-linked stops (currently "Walk With Jesus").
 - **Timeline** — a chronological view across the events table.
