@@ -329,6 +329,24 @@ export const GetJourneyResponse = zod.object({
 
 
 /**
+ * @summary Save which stop the current visitor or signed-in user has reached
+ */
+export const SetJourneyProgressParams = zod.object({
+  "slug": zod.coerce.string()
+})
+
+export const setJourneyProgressBodyCurrentStopIndexMin = 0;
+
+
+
+export const SetJourneyProgressBody = zod.object({
+  "currentStopIndex": zod.number().int().min(setJourneyProgressBodyCurrentStopIndexMin)
+})
+
+export const SetJourneyProgressResponse = zod.void()
+
+
+/**
  * @summary Search Scripture and connected knowledge
  */
 export const searchContentQueryQMin = 2;
@@ -469,5 +487,139 @@ export const UpdateProgressResponse = zod.object({
   "percent": zod.number().int().min(updateProgressResponsePercentMin).max(updateProgressResponsePercentMax),
   "lastReference": zod.string()
 })
+
+
+/**
+ * @summary Get real reading statistics for the current visitor or signed-in user
+ */
+export const GetStatsResponse = zod.object({
+  "chaptersRead": zod.number().int(),
+  "booksStarted": zod.number().int(),
+  "journeysStarted": zod.number().int(),
+  "readingSince": zod.coerce.date().nullable()
+})
+
+
+/**
+ * @summary Get the current custom reading plan, if any
+ */
+
+
+
+export const GetReadingPlanResponse = zod.object({
+  "bookSlug": zod.string(),
+  "dailyMinutes": zod.number().int().min(1),
+  "startedAt": zod.coerce.date()
+})
+
+
+/**
+ * @summary Create or replace the custom reading plan
+ */
+
+
+
+export const SetReadingPlanBody = zod.object({
+  "bookSlug": zod.string(),
+  "dailyMinutes": zod.number().int().min(1)
+})
+
+
+
+
+export const SetReadingPlanResponse = zod.object({
+  "bookSlug": zod.string(),
+  "dailyMinutes": zod.number().int().min(1),
+  "startedAt": zod.coerce.date()
+})
+
+
+/**
+ * @summary Create an account
+ */
+export const registerBodyPasswordMin = 8;
+
+
+
+export const RegisterBody = zod.object({
+  "email": zod.string().email(),
+  "password": zod.string().min(registerBodyPasswordMin)
+})
+
+export const RegisterResponse = zod.object({
+  "id": zod.string(),
+  "email": zod.string().email()
+})
+
+
+/**
+ * @summary Sign in
+ */
+export const loginBodyPasswordMin = 8;
+
+
+
+export const LoginBody = zod.object({
+  "email": zod.string().email(),
+  "password": zod.string().min(loginBodyPasswordMin)
+})
+
+export const LoginResponse = zod.object({
+  "id": zod.string(),
+  "email": zod.string().email()
+})
+
+
+/**
+ * @summary Sign out
+ */
+export const LogoutResponse = zod.void()
+
+
+/**
+ * @summary Get the signed-in user, if any
+ */
+export const GetCurrentUserResponse = zod.object({
+  "id": zod.string(),
+  "email": zod.string().email()
+})
+
+
+/**
+ * @summary List the signed-in user's bookmarks
+ */
+export const ListBookmarksResponseItem = zod.object({
+  "id": zod.number().int(),
+  "targetType": zod.enum(['verse', 'person', 'place', 'event', 'journey']),
+  "targetRef": zod.string(),
+  "createdAt": zod.coerce.date()
+})
+export const ListBookmarksResponse = zod.array(ListBookmarksResponseItem)
+
+
+/**
+ * @summary Bookmark a verse, person, place, event, or journey
+ */
+export const CreateBookmarkBody = zod.object({
+  "targetType": zod.enum(['verse', 'person', 'place', 'event', 'journey']),
+  "targetRef": zod.string()
+})
+
+export const CreateBookmarkResponse = zod.object({
+  "id": zod.number().int(),
+  "targetType": zod.enum(['verse', 'person', 'place', 'event', 'journey']),
+  "targetRef": zod.string(),
+  "createdAt": zod.coerce.date()
+})
+
+
+/**
+ * @summary Remove a bookmark
+ */
+export const DeleteBookmarkParams = zod.object({
+  "id": zod.coerce.number().int()
+})
+
+export const DeleteBookmarkResponse = zod.void()
 
 

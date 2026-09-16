@@ -1,4 +1,4 @@
-import { and, asc, eq, ilike, or } from "drizzle-orm";
+import { and, asc, count, countDistinct, eq, ilike, min, or } from "drizzle-orm";
 import {
   db,
   booksTable,
@@ -9,6 +9,9 @@ import {
   journeysTable,
   journeyStopsTable,
   readingProgressTable,
+  chapterReadsTable,
+  journeyProgressTable,
+  readingPlansTable,
 } from "@workspace/db";
 import type {
   Book,
@@ -21,7 +24,9 @@ import type {
   PersonSummary,
   Place,
   PlaceSummary,
+  ReadingPlan,
   ReadingProgress,
+  ReadingStats,
   TimelineEvent,
   Verse,
 } from "@workspace/api-zod";
@@ -276,16 +281,62 @@ async function getRelatedEvents(): Promise<EventSummary[]> {
 
 const DEFAULT_PROGRESS: ReadingProgress = { bookSlug: "mark", chapter: 1, verse: 16, percent: 12, lastReference: "Mark 1:16" };
 
-export async function getProgress(visitorId: string): Promise<ReadingProgress> {
-  const [row] = await db.select().from(readingProgressTable).where(eq(readingProgressTable.visitorId, visitorId)).limit(1);
+export async function getProgress(ownerId: string): Promise<ReadingProgress> {
+  const [row] = await db.select().from(readingProgressTable).where(eq(readingProgressTable.ownerId, ownerId)).limit(1);
   if (!row) return DEFAULT_PROGRESS;
   return { bookSlug: row.bookSlug, chapter: row.chapter, verse: row.verse, percent: row.percent, lastReference: row.lastReference };
 }
 
-export async function saveProgress(visitorId: string, input: ReadingProgress): Promise<ReadingProgress> {
+export async function saveProgress(ownerId: string, input: ReadingProgress): Promise<ReadingProgress> {
   await db
     .insert(readingProgressTable)
-    .values({ visitorId, ...input })
-    .onConflictDoUpdate({ target: readingProgressTable.visitorId, set: { ...input, updatedAt: new Date() } });
+    .values({ ownerId, ...input })
+    .onConflictDoUpdate({ target: readingProgressTable.ownerId, set: { ...input, updatedAt: new Date() } });
+  await db
+    .insert(chapterReadsTable)
+    .values({ ownerId, bookSlug: input.bookSlug, chapter: input.chapter })
+    .onConflictDoNothing();
   return input;
+}
+
+export async function getStats(ownerId: string): Promise<ReadingStats> {
+  const [chapterStats] = await db
+    .select({ chaptersRead: count(), booksStarted: countDistinct(chapterReadsTable.bookSlug), readingSince: min(chapterReadsTable.readAt) })
+    .from(chapterReadsTable)
+    .where(eq(chapterReadsTable.ownerId, ownerId));
+  const [journeyStats] = await db
+    .select({ journeysStarted: countDistinct(journeyProgressTable.journeySlug) })
+    .from(journeyProgressTable)
+    .where(eq(journeyProgressTable.ownerId, ownerId));
+  return {
+    chaptersRead: chapterStats?.chaptersRead ?? 0,
+    booksStarted: chapterStats?.booksStarted ?? 0,
+    journeysStarted: journeyStats?.journeysStarted ?? 0,
+    readingSince: chapterStats?.readingSince ?? null,
+  };
+}
+
+export async function getReadingPlan(ownerId: string): Promise<ReadingPlan | null> {
+  const [row] = await db.select().from(readingPlansTable).where(eq(readingPlansTable.ownerId, ownerId)).limit(1);
+  if (!row) return null;
+  return { bookSlug: row.bookSlug, dailyMinutes: row.dailyMinutes, startedAt: row.startedAt };
+}
+
+export async function saveReadingPlan(ownerId: string, bookSlug: string, dailyMinutes: number): Promise<ReadingPlan> {
+  const startedAt = new Date();
+  await db
+    .insert(readingPlansTable)
+    .values({ ownerId, bookSlug, dailyMinutes, startedAt })
+    .onConflictDoUpdate({ target: readingPlansTable.ownerId, set: { bookSlug, dailyMinutes, startedAt } });
+  return { bookSlug, dailyMinutes, startedAt };
+}
+
+export async function saveJourneyProgress(ownerId: string, journeySlug: string, currentStopIndex: number): Promise<void> {
+  await db
+    .insert(journeyProgressTable)
+    .values({ ownerId, journeySlug, currentStopIndex })
+    .onConflictDoUpdate({
+      target: [journeyProgressTable.ownerId, journeyProgressTable.journeySlug],
+      set: { currentStopIndex, updatedAt: new Date() },
+    });
 }

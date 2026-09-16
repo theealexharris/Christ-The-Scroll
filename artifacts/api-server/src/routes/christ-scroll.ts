@@ -6,12 +6,16 @@ import {
   ExplainPassageBody,
   GetChapterParams,
   GetJourneyParams,
+  GetProgressResponse,
   GetPersonParams,
   GetPlaceParams,
-  GetProgressResponse,
+  GetReadingPlanResponse,
+  GetStatsResponse,
   GetVerseExplorationParams,
   GetVerseParams,
   SearchContentQueryParams,
+  SetJourneyProgressBody,
+  SetReadingPlanBody,
   UpdateProgressBody,
 } from "@workspace/api-zod";
 import {
@@ -26,9 +30,13 @@ import {
   getPlace,
   getPlaces,
   getProgress,
+  getReadingPlan,
+  getStats,
   getTimeline,
   getVerseById,
+  saveJourneyProgress,
   saveProgress,
+  saveReadingPlan,
   searchEvents,
   searchJourneys,
   searchPeople,
@@ -48,6 +56,11 @@ function getOrCreateVisitorId(req: Request, res: Response): string {
   const id = randomUUID();
   res.cookie(VISITOR_COOKIE, id, { httpOnly: true, sameSite: "lax", maxAge: ONE_YEAR_MS });
   return id;
+}
+
+// Signed-in users' data is keyed by their account id; guests get a persistent anonymous cookie instead.
+function getOwnerId(req: Request, res: Response): string {
+  return req.userId ?? getOrCreateVisitorId(req, res);
 }
 
 // The AI endpoints proxy to a paid model, so an unauthenticated caller must not be able to run
@@ -129,6 +142,14 @@ router.get("/journeys/:slug", async (req, res) => {
   const journey = parsed.success ? await getJourney(parsed.data.slug) : null;
   return journey ? res.json(journey) : res.status(404).json({ error: "Journey not found." });
 });
+router.put("/journeys/:slug/progress", async (req, res) => {
+  const params = GetJourneyParams.safeParse(req.params);
+  const body = SetJourneyProgressBody.safeParse(req.body);
+  if (!params.success || !body.success) return res.status(400).json({ error: "Invalid journey progress." });
+  const ownerId = getOwnerId(req, res);
+  await saveJourneyProgress(ownerId, params.data.slug, body.data.currentStopIndex);
+  return res.status(204).send();
+});
 
 router.get("/search", async (req, res) => {
   const parsed = SearchContentQueryParams.safeParse(req.query);
@@ -179,14 +200,31 @@ router.post("/ai/ask-passage", aiRateLimiter, async (req, res) => {
 });
 
 router.get("/me/progress", async (req, res) => {
-  const visitorId = getOrCreateVisitorId(req, res);
-  return res.json(GetProgressResponse.parse(await getProgress(visitorId)));
+  const ownerId = getOwnerId(req, res);
+  return res.json(GetProgressResponse.parse(await getProgress(ownerId)));
 });
 router.patch("/me/progress", async (req, res) => {
   const parsed = UpdateProgressBody.safeParse(req.body);
   if (!parsed.success) return res.status(400).json({ error: "Invalid progress." });
-  const visitorId = getOrCreateVisitorId(req, res);
-  return res.json(await saveProgress(visitorId, parsed.data));
+  const ownerId = getOwnerId(req, res);
+  return res.json(await saveProgress(ownerId, parsed.data));
+});
+
+router.get("/me/stats", async (req, res) => {
+  const ownerId = getOwnerId(req, res);
+  return res.json(GetStatsResponse.parse(await getStats(ownerId)));
+});
+
+router.get("/me/plan", async (req, res) => {
+  const ownerId = getOwnerId(req, res);
+  const plan = await getReadingPlan(ownerId);
+  return plan ? res.json(GetReadingPlanResponse.parse(plan)) : res.status(404).json({ error: "No reading plan set." });
+});
+router.put("/me/plan", async (req, res) => {
+  const parsed = SetReadingPlanBody.safeParse(req.body);
+  if (!parsed.success) return res.status(400).json({ error: "A book and a daily reading goal are required." });
+  const ownerId = getOwnerId(req, res);
+  return res.json(await saveReadingPlan(ownerId, parsed.data.bookSlug, parsed.data.dailyMinutes));
 });
 
 export default router;

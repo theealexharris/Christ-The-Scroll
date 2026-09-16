@@ -5,6 +5,7 @@ import cookieParser from "cookie-parser";
 import cors from "cors";
 import pinoHttp from "pino-http";
 import router from "./routes";
+import { attachUser } from "./lib/auth";
 import { logger } from "./lib/logger";
 
 // esbuild bundles this whole server into a single artifacts/api-server/dist/index.mjs,
@@ -37,6 +38,7 @@ app.use(cors());
 app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(attachUser);
 
 app.use("/api", router);
 
