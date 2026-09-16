@@ -1,13 +1,18 @@
-import { useState } from 'react';
+import { lazy, Suspense, useState } from 'react';
 import { useParams, Link } from 'wouter';
-import { useGetJourney, useSetJourneyProgress } from '@workspace/api-client-react';
+import { useGetJourney, useGetPlace, useSetJourneyProgress } from '@workspace/api-client-react';
 import { ChevronLeft, MapPin, ArrowRight, ArrowLeft } from 'lucide-react';
+
+// maplibre-gl is large; keep it out of the main bundle and load it only where a map is shown.
+const PlaceMap = lazy(() => import('@/components/place-map').then((m) => ({ default: m.PlaceMap })));
 
 export default function JourneyDetail() {
   const { slug } = useParams<{ slug: string }>();
   const { data: journey, isLoading } = useGetJourney(slug || '');
   const [currentStopIndex, setCurrentStopIndexState] = useState(0);
   const setJourneyProgress = useSetJourneyProgress();
+  const stopPlaceSlug = journey?.stops[currentStopIndex]?.placeSlug ?? '';
+  const { data: stopPlace } = useGetPlace(stopPlaceSlug);
 
   const setCurrentStopIndex = (updater: (i: number) => number) => {
     setCurrentStopIndexState((prev) => {
@@ -43,9 +48,15 @@ export default function JourneyDetail() {
       <main className="flex flex-1 flex-col md:flex-row">
         {/* Map Panel */}
         <div className="flex-1 min-h-[30vh] bg-secondary/30 relative border-b md:border-b-0 md:border-r border-border overflow-hidden flex flex-col">
-          <div className="absolute inset-0 opacity-20" style={{ backgroundImage: 'radial-gradient(circle at center, var(--color-primary) 1px, transparent 1px)', backgroundSize: '32px 32px' }} />
-          
-          <div className="p-6 md:p-10 relative z-10">
+          {stopPlace ? (
+            <Suspense fallback={null}>
+              <PlaceMap latitude={stopPlace.latitude} longitude={stopPlace.longitude} name={stopPlace.name} className="absolute inset-0" />
+            </Suspense>
+          ) : (
+            <div className="absolute inset-0 opacity-20" style={{ backgroundImage: 'radial-gradient(circle at center, var(--color-primary) 1px, transparent 1px)', backgroundSize: '32px 32px' }} />
+          )}
+
+          <div className="p-6 md:p-10 relative z-10 pointer-events-none [&_a]:pointer-events-auto">
             <h1 className="font-serif text-3xl font-medium mb-2">{journey.title}</h1>
             <p className="text-muted-foreground">{journey.subtitle}</p>
           </div>

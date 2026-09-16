@@ -1,7 +1,11 @@
+import { lazy, Suspense } from 'react';
 import { useParams, Link } from 'wouter';
 import { useGetPlace } from '@workspace/api-client-react';
-import { MapPin, ChevronLeft, Map as MapIcon } from 'lucide-react';
+import { ChevronLeft } from 'lucide-react';
 import { BookmarkButton } from '@/components/bookmark-button';
+
+// maplibre-gl is large; keep it out of the main bundle and load it only where a map is shown.
+const PlaceMap = lazy(() => import('@/components/place-map').then((m) => ({ default: m.PlaceMap })));
 
 export default function PlaceDetail() {
   const { slug } = useParams<{ slug: string }>();
@@ -25,14 +29,14 @@ export default function PlaceDetail() {
       </header>
 
       <main className="flex-1 p-6 md:p-10 max-w-3xl mx-auto w-full animate-in fade-in slide-in-from-bottom-4 duration-500">
-        {/* Map Treatment Placeholder */}
-        <div className="w-full h-48 md:h-64 rounded-3xl bg-secondary/30 mb-8 flex flex-col items-center justify-center text-muted-foreground border border-border relative overflow-hidden">
-           <div className="absolute inset-0 opacity-10" style={{ backgroundImage: 'radial-gradient(circle at center, #000 1px, transparent 1px)', backgroundSize: '16px 16px' }} />
-           <MapIcon className="h-10 w-10 mb-2 opacity-50" />
-           <span className="text-sm font-medium tracking-widest uppercase">Historical Map Context</span>
-           <div className="absolute bottom-4 left-4 bg-background/80 backdrop-blur px-3 py-1.5 rounded-full text-xs font-mono border border-border shadow-sm">
-             {place.latitude.toFixed(4)}° N, {place.longitude.toFixed(4)}° E
-           </div>
+        {/* Interactive Map */}
+        <div className="w-full h-48 md:h-64 rounded-3xl mb-8 border border-border relative overflow-hidden bg-secondary/30">
+          <Suspense fallback={null}>
+            <PlaceMap latitude={place.latitude} longitude={place.longitude} name={place.name} className="absolute inset-0" />
+          </Suspense>
+          <div className="pointer-events-none absolute bottom-4 left-4 bg-background/80 backdrop-blur px-3 py-1.5 rounded-full text-xs font-mono border border-border shadow-sm">
+            {place.latitude.toFixed(4)}° N, {place.longitude.toFixed(4)}° E
+          </div>
         </div>
 
         <div className="mb-8 flex items-start justify-between gap-4">
