@@ -24,6 +24,10 @@ One web service hosts both the API and the built frontend — `artifacts/api-ser
 - Env vars on the service itself: `DATABASE_URL`, `AUTH_SECRET` (required — see above), `ANTHROPIC_API_KEY`
 - After the first deploy, seed the production database once (from your machine, pointed at the deployed `DATABASE_URL`): `pnpm --filter db run push && pnpm --filter db run seed`
 
+## Deployment status
+
+Live in production on Render at `christ-the-scroll.onrender.com` as of 2026-09-16. The production database has been schema-pushed and seeded (66 books, 31,100 verses, 20 people, 20 places, 15 events, 1 journey with 8 stops) — accounts, bookmarks, and reading stats are live and working end-to-end.
+
 ## Stack
 
 - pnpm workspaces, Node.js 24, TypeScript 5.9
@@ -39,7 +43,7 @@ One web service hosts both the API and the built frontend — `artifacts/api-ser
 
 - `lib/api-spec/openapi.yaml` — source of truth for the API contract
 - `lib/api-zod` — generated Zod schemas + TanStack Query hooks (`pnpm --filter @workspace/api-spec run codegen` to regenerate)
-- `lib/db/src/schema` — Drizzle tables: `books.ts` (books + verses), `people.ts`, `places.ts`, `events.ts`, `journeys.ts` (journeys + stops), `progress.ts` (per-visitor reading progress)
+- `lib/db/src/schema` — Drizzle tables: `books.ts` (books + verses), `people.ts`, `places.ts`, `events.ts`, `journeys.ts` (journeys + stops), `users.ts`, `bookmarks.ts`, `progress.ts` (reading progress, chapter reads, journey progress, reading plans)
 - `lib/db/src/seed.ts` — seeds the tables above with the app's Scripture/people/places/events content
 - `lib/db/src/data/kjv.json` — full King James Version text (66 books, 1,189 chapters, 31,100 verses); see `KJV-SOURCE.md` in the same directory for provenance/license
 - `artifacts/api-server/src/data/christ-scroll.ts` — data-access layer the API routes call into; every function here queries Postgres
@@ -79,6 +83,7 @@ _Populate as you build — explicit user instructions worth remembering across s
 - The seed script uses `onConflictDoNothing`/`onConflictDoUpdate`, so it's safe to re-run, but it never deletes rows — dropping a row from the seed source data won't remove it from an already-seeded database.
 - `DATABASE_URL` must be set before importing `@workspace/db` — both `lib/db/src/index.ts` and `drizzle.config.ts` throw immediately if it's missing.
 - `AUTH_SECRET` must be set for the API server to start at all (`lib/auth.ts` throws the first time it's needed, which is on every request via the `attachUser` middleware) — don't forget it in a new environment, or every request will 500.
+- If `pnpm --filter db run push`/`run seed` can't reach the database from wherever you're running it (a sandboxed environment, a locked-down network), Render's own **Shell** tab on the web service works: the container already has the repo and dependencies from the build step, is on Render's network, and has `DATABASE_URL` in its environment already, so you can just run `pnpm --filter db run push` (or `run seed`) there directly with no extra setup. Shell access is a paid Render tier feature. Use plain `push`, not `push-force` — `push-force` maps to `drizzle-kit push --force`, which auto-accepts every data-loss prompt instead of asking first; only reach for it if `push`'s interactive confirmation can't be answered in that shell, and even then review what it's about to drop first.
 
 ## Pointers
 

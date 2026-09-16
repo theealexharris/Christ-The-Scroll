@@ -29,7 +29,12 @@ export async function verifyPassword(password: string, hash: string): Promise<bo
 
 export function issueSession(res: Response, userId: string): void {
   const token = jwt.sign({ sub: userId }, getSecret(), { expiresIn: "30d" });
-  res.cookie(SESSION_COOKIE, token, { httpOnly: true, sameSite: "lax", maxAge: THIRTY_DAYS_MS });
+  res.cookie(SESSION_COOKIE, token, {
+    httpOnly: true,
+    sameSite: "lax",
+    secure: process.env.NODE_ENV === "production",
+    maxAge: THIRTY_DAYS_MS,
+  });
 }
 
 export function clearSession(res: Response): void {

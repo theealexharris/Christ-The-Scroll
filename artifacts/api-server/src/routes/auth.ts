@@ -1,11 +1,22 @@
 import { Router, type IRouter } from "express";
+import rateLimit from "express-rate-limit";
 import { GetCurrentUserResponse, LoginBody, LoginResponse, RegisterBody, RegisterResponse } from "@workspace/api-zod";
 import { createUser, getUserByEmail, getUserById } from "../data/auth";
 import { clearSession, hashPassword, issueSession, verifyPassword } from "../lib/auth";
 
 const router: IRouter = Router();
 
-router.post("/auth/register", async (req, res) => {
+// Password hashing/verification is deliberately slow (bcrypt), which is exactly what makes
+// register/login attractive to brute force or credential-stuff without a limiter in front of them.
+const authRateLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  limit: 20,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { error: "Too many attempts. Please wait a few minutes and try again." },
+});
+
+router.post("/auth/register", authRateLimiter, async (req, res) => {
   const parsed = RegisterBody.safeParse(req.body);
   if (!parsed.success) return res.status(400).json({ error: "A valid email and password (at least 8 characters) are required." });
   const existing = await getUserByEmail(parsed.data.email);
@@ -16,7 +27,7 @@ router.post("/auth/register", async (req, res) => {
   return res.status(201).json(RegisterResponse.parse({ id: user.id, email: user.email }));
 });
 
-router.post("/auth/login", async (req, res) => {
+router.post("/auth/login", authRateLimiter, async (req, res) => {
   const parsed = LoginBody.safeParse(req.body);
   if (!parsed.success) return res.status(400).json({ error: "Email and password are required." });
   const user = await getUserByEmail(parsed.data.email);
