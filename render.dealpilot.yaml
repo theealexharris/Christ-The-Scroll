@@ -1,0 +1,34 @@
+# Render Blueprint for DealPilot AI (one web service + one PostgreSQL database).
+# In Render: New → Blueprint → select this repo → set "Blueprint file path" to render.dealpilot.yaml.
+# Verify plan names and regions against Render's current pricing before applying.
+services:
+  - type: web
+    name: dealpilot-ai
+    runtime: node
+    plan: starter
+    buildCommand: corepack enable && pnpm install --frozen-lockfile && pnpm run dealpilot:build
+    startCommand: pnpm run dealpilot:start
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_VERSION
+        value: "22"
+      - key: NODE_ENV
+        value: production
+      - key: DATABASE_URL
+        fromDatabase:
+          name: dealpilot-db
+          property: connectionString
+      - key: BETTER_AUTH_SECRET
+        generateValue: true
+      - key: DEALPILOT_APP_URL
+        sync: false # e.g. https://dealpilot-ai.onrender.com
+      - key: ANTHROPIC_API_KEY
+        sync: false # optional; leave empty for demo mode
+      - key: DEALPILOT_ALLOW_DEMO_ACCOUNTS
+        value: "true"
+
+databases:
+  - name: dealpilot-db
+    plan: basic-256mb
+    databaseName: dealpilot
+    user: dealpilot
